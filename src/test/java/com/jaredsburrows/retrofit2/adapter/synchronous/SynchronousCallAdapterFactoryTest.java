@@ -1,8 +1,10 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.List;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okhttp3.mockwebserver.MockResponse;
@@ -10,6 +12,8 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.SocketPolicy;
 import org.junit.Rule;
 import org.junit.Test;
+import retrofit2.Call;
+import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.helpers.ToStringConverterFactory;
@@ -27,11 +31,16 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
+ * This test uses a {@link Service} that does not use {@link retrofit2.Call}.
+ *
+ * Based off of: https://github.com/square/retrofit/blob/master/retrofit/src/test/java/retrofit2/CallTest.java.
+ *
  * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
  */
 public final class SynchronousCallAdapterFactoryTest {
   @Rule public final MockWebServer server = new MockWebServer();
 
+  // Raw return types
   private interface Service {
     @GET("/") String string();
     @GET("/") ResponseBody body();
@@ -291,5 +300,31 @@ public final class SynchronousCallAdapterFactoryTest {
     // Assert
     String response = example.string();
     assertThat(response).isEmpty();
+  }
+
+  private static final Annotation[] NO_ANNOTATIONS = new Annotation[0];
+  private final Retrofit retrofit = new Retrofit.Builder()
+      .baseUrl("http://localhost:1")
+      .build();
+  private final CallAdapter.Factory factory = new SynchronousCallAdapterFactory();
+
+  @Test public void rawTypeReturnsNull() {
+    // Act and Assert
+    assertThat(factory.get(Call.class, NO_ANNOTATIONS, retrofit)).isNull();
+  }
+
+  @Test public void responseType() {
+    // Arrange
+    Type classType = new TypeToken<String>() {
+    }.getType();
+    Type genericType = new TypeToken<List<String>>() {
+    }.getType();
+
+    // Act and Assert
+    assertThat(factory.get(classType, NO_ANNOTATIONS, retrofit).responseType())
+        .isEqualTo(String.class);
+    assertThat(factory.get(genericType, NO_ANNOTATIONS, retrofit).responseType())
+        .isEqualTo(new TypeToken<List<String>>() {
+        }.getType());
   }
 }

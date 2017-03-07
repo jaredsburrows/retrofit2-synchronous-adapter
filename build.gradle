@@ -15,8 +15,8 @@ repositories {
 }
 
 group = "com.jaredsburrows.retrofit"
-version = "0.1.1" + (hasProperty("release") ? "" : "-SNAPSHOT")
-description = "This adapter allows synchronous return types for retrofit 2."
+version = "0.1.2" + (hasProperty("release") ? "" : "-SNAPSHOT")
+description = "This adapter allows synchronous return types for Retrofit 2."
 
 ext {
   sourceCompatibilityVersion = JavaVersion.VERSION_1_7
@@ -39,4 +39,5 @@ dependencies {
   testCompile "org.assertj:assertj-core:1.7.0"
   testCompile "org.mockito:mockito-core:2.2.0"
   testCompile "com.squareup.okhttp3:mockwebserver:3.6.0"
+  testCompile "com.squareup.retrofit2:converter-gson:2.2.0"
 }
