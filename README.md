@@ -42,7 +42,7 @@ repositories {
   jcenter()
 }
   
-compile "com.jaredsburrows.retrofit:adapter-synchronous:0.1.2"
+compile "com.jaredsburrows.retrofit:adapter-synchronous:0.1.3"
 ```
 
 Snapshot versions are available in the JFrog Artifactory repository: https://oss.jfrog.org/webapp/#/builds/adapter-synchronous
