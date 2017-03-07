@@ -144,11 +144,14 @@ bintray {
       desc = project.description
       released = new Date()
       vcsTag = project.version
-
+      gpg {
+        sign = true
+        passphrase = project.properties["SIGNING_PASSWORD"] ?: System.getenv("SIGNING_PASSWORD")
+      }
       mavenCentralSync {
         sync = false
-        user = project.properties["SONATYPE_USERNAME"] ?: System.getenv("SONATYPE_USERNAME")
-        password = project.properties["SONATYPE_PASSWORD"] ?: System.getenv("SONATYPE_PASSWORD")
+        user = project.properties["NEXUS_USERNAME"] ?: System.getenv("NEXUS_USERNAME")
+        password = project.properties["NEXUS_PASSWORD"] ?: System.getenv("NEXUS_PASSWORD")
         close = "1"
       }
     }
