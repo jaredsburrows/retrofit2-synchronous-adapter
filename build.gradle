@@ -15,7 +15,7 @@ repositories {
 }
 
 group = "com.jaredsburrows.retrofit"
-version = "0.1.0" + (hasProperty("release") ? "" : "-SNAPSHOT")
+version = "0.1.1" + (hasProperty("release") ? "" : "-SNAPSHOT")
 description = "This adapter allows synchronous return types for retrofit 2."
 
 ext {
