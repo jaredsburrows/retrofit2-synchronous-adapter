@@ -2,7 +2,7 @@ plugins {
   id "com.gradle.build-scan" version "1.4"
   id "com.github.kt3k.coveralls" version "2.8.1"
   id "net.ltgt.errorprone" version "0.0.8"
-  id "com.jfrog.artifactory" version "4.4.13"
+  id "com.jfrog.artifactory" version "4.4.14"
   id "com.jfrog.bintray" version "1.7.3"
   id "com.github.ben-manes.versions" version "0.14.0"
   id "java"
@@ -12,6 +12,7 @@ plugins {
 
 repositories {
   maven { url "https://plugins.gradle.org/m2/" }
+  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 group = "com.jaredsburrows.retrofit"
@@ -27,11 +28,11 @@ sourceCompatibility = ext.sourceCompatibilityVersion
 targetCompatibility = ext.sourceCompatibilityVersion
 
 dependencies {
-  compile "com.squareup.retrofit2:retrofit:2.2.0"
+  compile "com.squareup.retrofit2:retrofit:2.3.0-SNAPSHOT"
 
   testCompile "junit:junit:4.12"
   testCompile "org.assertj:assertj-core:1.7.0"
-  testCompile "org.mockito:mockito-core:2.2.0"
+  testCompile "org.mockito:mockito-core:2.7.20"
   testCompile "com.squareup.okhttp3:mockwebserver:3.6.0"
   testCompile "com.squareup.retrofit2:converter-gson:2.2.0"
 }
