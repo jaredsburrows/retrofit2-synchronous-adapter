@@ -16,8 +16,8 @@ repositories {
 }
 
 group = "com.jaredsburrows.retrofit"
-version = "0.1.4" + (hasProperty("release") ? "" : "-SNAPSHOT")
-description = "This adapter allows synchronous return types for Retrofit 2."
+version = "0.1.5" + (hasProperty("release") ? "" : "-SNAPSHOT")
+description = "Synchronous return types for Retrofit 2."
 
 ext {
   sourceCompatibilityVersion = JavaVersion.VERSION_1_7
