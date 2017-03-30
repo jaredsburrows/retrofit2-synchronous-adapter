@@ -42,7 +42,7 @@ final class SynchronousCallAdapter<R> implements CallAdapter<R, Object> {
       try {
         return response.errorBody().string();
       } catch (IOException e) {
-        throw new RuntimeException(new HttpException(response));
+        throw new HttpException(response);
       }
     }
 
