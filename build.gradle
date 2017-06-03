@@ -2,9 +2,9 @@ plugins {
   id "com.gradle.build-scan" version "1.6"
   id "com.github.kt3k.coveralls" version "2.8.1"
   id "net.ltgt.errorprone" version "0.0.10"
-  id "com.jfrog.artifactory" version "4.4.15"
+  id "com.jfrog.artifactory" version "4.4.18"
   id "com.jfrog.bintray" version "1.7.3"
-  id "com.github.ben-manes.versions" version "0.14.0"
+  id "com.github.ben-manes.versions" version "0.15.0"
   id "java"
   id "maven-publish"
   id "jacoco"
@@ -12,34 +12,30 @@ plugins {
 
 repositories {
   maven { url "https://plugins.gradle.org/m2/" }
-  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
-group = "com.jaredsburrows.retrofit"
-version = "0.1.5" + (hasProperty("release") ? "" : "-SNAPSHOT")
-description = "Synchronous return types for Retrofit 2."
+apply from: rootProject.file("gradle/versions.gradle")
 
-ext {
-  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-  targetCompatibilityVersion = JavaVersion.VERSION_1_7
-}
+group = GROUP
+version = VERSION_NAME
+description = POM_DESCRIPTION
 
 sourceCompatibility = ext.sourceCompatibilityVersion
 targetCompatibility = ext.sourceCompatibilityVersion
 
 dependencies {
-  compile "com.squareup.retrofit2:retrofit:2.3.0-SNAPSHOT"
+  compile deps.retrofit
 
-  testCompile "junit:junit:4.12"
-  testCompile "org.assertj:assertj-core:1.7.0"
-  testCompile "org.mockito:mockito-core:2.7.22"
-  testCompile "com.squareup.okhttp3:mockwebserver:3.7.0"
-  testCompile "com.squareup.retrofit2:converter-gson:2.2.0"
+  testCompile deps.junit
+  testCompile deps.assertjCore
+  testCompile deps.mockitoCore
+  testCompile deps.mockwebserver
+  testCompile deps.converterGson
 }
 
-apply from: "gradle/scan.gradle"
-apply from: "gradle/compile.gradle"
-apply from: "gradle/quality.gradle"
-apply from: "gradle/publish.gradle"
-apply from: "gradle/wrapper.gradle"
-
+// Oder matters
+apply from: rootProject.file("gradle/scan.gradle")
+apply from: rootProject.file("gradle/compile.gradle")
+apply from: rootProject.file("gradle/publish.gradle")
+apply from: rootProject.file("gradle/quality.gradle")
+apply from: rootProject.file("gradle/wrapper.gradle")
