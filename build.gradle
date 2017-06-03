@@ -5,7 +5,7 @@ plugins {
   id "com.jfrog.artifactory" version "4.4.18"
   id "com.jfrog.bintray" version "1.7.3"
   id "com.github.ben-manes.versions" version "0.15.0"
-  id "java"
+  id "java-library"
   id "maven-publish"
   id "jacoco"
 }
@@ -24,13 +24,15 @@ sourceCompatibility = ext.sourceCompatibilityVersion
 targetCompatibility = ext.sourceCompatibilityVersion
 
 dependencies {
-  compile deps.retrofit
+  implementation deps.retrofit
 
-  testCompile deps.junit
-  testCompile deps.assertjCore
-  testCompile deps.mockitoCore
-  testCompile deps.mockwebserver
-  testCompile deps.converterGson
+  compileOnly deps.jsr305
+
+  testImplementation deps.junit
+  testImplementation deps.assertjCore
+  testImplementation deps.mockitoCore
+  testImplementation deps.mockwebserver
+  testImplementation deps.converterGson
 }
 
 // Oder matters

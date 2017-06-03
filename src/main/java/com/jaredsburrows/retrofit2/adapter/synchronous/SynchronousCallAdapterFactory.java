@@ -2,6 +2,7 @@ package com.jaredsburrows.retrofit2.adapter.synchronous;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import javax.annotation.Nullable;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
@@ -18,7 +19,8 @@ public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
   }
 
   @Override
-  public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
+  public @Nullable CallAdapter<?, ?> get(Type returnType, Annotation[] annotations,
+      Retrofit retrofit) {
     if (getRawType(returnType) == Call.class) return null;
 
     return new SynchronousCallAdapter<>(returnType);

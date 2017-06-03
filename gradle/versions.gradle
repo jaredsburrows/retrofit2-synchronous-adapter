@@ -7,10 +7,13 @@ ext {
 
 // Dependencies
 ext.deps = [
-        // copmile
+        // implementation
         "retrofit"     : "com.squareup.retrofit2:retrofit:$retrofitVersion",
 
-        // testCompile
+        // compileOnly
+        "jsr305"       : "com.google.code.findbugs:jsr305:3.0.2",
+
+        // testImplementation
         "junit"        : "junit:junit:4.12",
         "assertjCore"  : "org.assertj:assertj-core:1.7.0",
         "mockitoCore"  : "org.mockito:mockito-core:2.8.9",
