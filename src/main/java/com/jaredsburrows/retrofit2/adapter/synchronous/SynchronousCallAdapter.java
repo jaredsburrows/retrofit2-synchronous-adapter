@@ -2,7 +2,6 @@ package com.jaredsburrows.retrofit2.adapter.synchronous;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.HttpException;
@@ -35,19 +34,12 @@ final class SynchronousCallAdapter<R> implements CallAdapter<R, Object> {
     // Stop here if something goes wrong
     if (response == null) return null;
 
-    // If successful, return the response
-    if (response.body() != null) return response.body();
-
-    // If an error occurs, return the error response body
-    final ResponseBody errorBody = response.errorBody();
-    if (errorBody != null) {
-      try {
-        return errorBody.string();
-      } catch (IOException ignore) {
-        throw new HttpException(response);
-      }
+    if (response.isSuccessful()) {
+      // If successful, return the response
+      return response.body();
+    } else {
+      // If an error occurs, return HttpException including response
+      throw new HttpException(response);
     }
-
-    return null;
   }
 }

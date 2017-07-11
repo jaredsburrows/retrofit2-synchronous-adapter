@@ -17,6 +17,7 @@ import okio.Okio;
 import org.junit.Rule;
 import org.junit.Test;
 import retrofit2.Converter;
+import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import retrofit2.helpers.StringConverterFactory;
 import retrofit2.http.Body;
@@ -33,7 +34,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory} instead.
  *
- * Based off of: https://github.com/square/retrofit/blob/master/retrofit/src/test/java/retrofit2/CallTest.java.
+ * Based off of
+ *  - https://github.com/square/retrofit/blob/master/retrofit/src/test/java/retrofit2/CallTest.java.
+ *  - https://github.com/square/retrofit/blob/master/retrofit-adapters/java8/src/test/java/retrofit2/adapter/java8/CompletableFutureTest.java
  *
  * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
  */
@@ -72,8 +75,15 @@ public final class SynchronousCallTest {
 
     server.enqueue(new MockResponse().setResponseCode(404).setBody("Hi"));
 
-    String response = example.getString();
-    assertThat(response).isEqualTo("Hi");
+    try {
+      String response = example.getString();
+      assertThat(response).isEqualTo("Hi");
+      fail();
+    } catch (Exception e) {
+      assertThat(e)
+          .isInstanceOf(HttpException.class)
+          .hasMessage("HTTP 404 Client Error");
+    }
   }
 
   @Test public void transportProblemSync() {
