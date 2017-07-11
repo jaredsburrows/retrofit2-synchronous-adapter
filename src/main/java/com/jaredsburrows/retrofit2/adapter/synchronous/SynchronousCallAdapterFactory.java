@@ -14,11 +14,11 @@ import retrofit2.Retrofit;
  * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
  */
 public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
-  public static CallAdapter.Factory create() {
-    return new SynchronousCallAdapterFactory();
+  private SynchronousCallAdapterFactory() {
   }
 
-  private SynchronousCallAdapterFactory() {
+  public static CallAdapter.Factory create() {
+    return new SynchronousCallAdapterFactory();
   }
 
   @Override

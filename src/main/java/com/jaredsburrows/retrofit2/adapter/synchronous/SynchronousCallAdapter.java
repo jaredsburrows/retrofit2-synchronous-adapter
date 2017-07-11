@@ -34,12 +34,10 @@ final class SynchronousCallAdapter<R> implements CallAdapter<R, Object> {
     // Stop here if something goes wrong
     if (response == null) return null;
 
-    if (response.isSuccessful()) {
-      // If successful, return the response
-      return response.body();
-    } else {
-      // If an error occurs, return HttpException including response
-      throw new HttpException(response);
-    }
+    // If successful, return the response
+    if (response.isSuccessful()) return response.body();
+
+    // If an error occurs, return HttpException including response
+    throw new HttpException(response);
   }
 }
