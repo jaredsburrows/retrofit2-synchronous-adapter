@@ -21,8 +21,7 @@ import retrofit2.http.POST;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * This test uses a {@link Service} that does not use {@link retrofit2.Call} as well as uses the
- * synchronous call adapter with a {@link Gson} converter to ensure correct serialization.
+ * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory} instead.
  *
  * Based off of: https://github.com/square/retrofit/blob/master/retrofit-converters/gson/src/test/java/retrofit2/converter/gson/GsonConverterFactoryTest.java.
  *
@@ -69,8 +68,7 @@ public final class SynchronousGsonConverterFactoryTest {
     }
   }
 
-  // Raw return types
-  private interface Service {
+  interface Service {
     @POST("/") AnImplementation anImplementation(@Body AnImplementation impl);
     @POST("/") AnInterface anInterface(@Body AnInterface impl);
   }
@@ -87,17 +85,14 @@ public final class SynchronousGsonConverterFactoryTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(GsonConverterFactory.create(gson))
-        .addCallAdapterFactory(
-            SynchronousCallAdapterFactory.create())  // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
         .build();
     service = retrofit.create(Service.class);
   }
 
   @Test public void anInterface() throws IOException, InterruptedException {
-    // Act
     server.enqueue(new MockResponse().setBody("{\"name\":\"value\"}"));
 
-    // Assert
     AnInterface response = service.anInterface(new AnImplementation("value"));
     assertThat(response.getName()).isEqualTo("value");
 
@@ -107,10 +102,8 @@ public final class SynchronousGsonConverterFactoryTest {
   }
 
   @Test public void anImplementation() throws IOException, InterruptedException {
-    // Act
     server.enqueue(new MockResponse().setBody("{\"theName\":\"value\"}"));
 
-    // Assert
     AnImplementation response = service.anImplementation(new AnImplementation("value"));
     assertThat(response.theName).isEqualTo("value");
 
@@ -120,10 +113,8 @@ public final class SynchronousGsonConverterFactoryTest {
   }
 
   @Test public void serializeUsesConfiguration() throws IOException, InterruptedException {
-    // Act
     server.enqueue(new MockResponse().setBody("{}"));
 
-    // Assert
     service.anImplementation(new AnImplementation(null));
 
     RecordedRequest request = server.takeRequest();
@@ -132,10 +123,8 @@ public final class SynchronousGsonConverterFactoryTest {
   }
 
   @Test public void deserializeUsesConfiguration() throws IOException, InterruptedException {
-    // Act
     server.enqueue(new MockResponse().setBody("{/* a comment! */}"));
 
-    // Assert
     AnImplementation response = service.anImplementation(new AnImplementation("value"));
     assertThat(response.getName()).isNull();
   }
