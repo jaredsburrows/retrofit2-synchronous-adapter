@@ -18,6 +18,9 @@ public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
     return new SynchronousCallAdapterFactory();
   }
 
+  private SynchronousCallAdapterFactory() {
+  }
+
   @Override
   public @Nullable CallAdapter<?, ?> get(Type returnType, Annotation[] annotations,
       Retrofit retrofit) {

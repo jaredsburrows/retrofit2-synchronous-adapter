@@ -34,7 +34,7 @@ public final class SynchronousCallAdapterFactoryTest {
     retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(new SynchronousCallAdapterFactory()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
         .addCallAdapterFactory(factory)
         .build();
   }
