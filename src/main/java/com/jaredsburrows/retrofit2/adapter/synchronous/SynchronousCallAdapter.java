@@ -2,6 +2,7 @@ package com.jaredsburrows.retrofit2.adapter.synchronous;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import javax.annotation.Nonnull;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.HttpException;
@@ -21,7 +22,7 @@ final class SynchronousCallAdapter<R> implements CallAdapter<R, Object> {
     return responseType;
   }
 
-  @Override public Object adapt(Call<R> call) {
+  @Override public Object adapt(@Nonnull Call<R> call) {
     Response<R> response;
 
     // Make the initial call

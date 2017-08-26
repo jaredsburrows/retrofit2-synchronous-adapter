@@ -3,6 +3,7 @@ package com.jaredsburrows.retrofit2.adapter.synchronous;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.concurrent.atomic.AtomicInteger;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -23,6 +24,7 @@ import retrofit2.helpers.StringConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Streaming;
 
 import static okhttp3.mockwebserver.SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY;
@@ -49,6 +51,7 @@ public final class SynchronousCallTest {
     @GET("/") ResponseBody getBody();
     @GET("/") @Streaming ResponseBody getStreamingBody();
     @POST("/") String postString(@Body String body);
+    @POST("/{a}") String postRequestBody(@Path("a") Object a);
   }
 
   @Test public void http200Sync() throws IOException {
@@ -156,6 +159,82 @@ public final class SynchronousCallTest {
     } catch (UnsupportedOperationException e) {
       assertThat(e).hasMessage("I am broken!");
     }
+  }
+
+  @Test public void requestBeforeExecuteCreates() throws IOException {
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(server.url("/"))
+        .addConverterFactory(new StringConverterFactory())
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .build();
+    Service service = retrofit.create(Service.class);
+
+    server.enqueue(new MockResponse());
+
+    final AtomicInteger writeCount = new AtomicInteger();
+    Object a = new Object() {
+      @Override public String toString() {
+        writeCount.incrementAndGet();
+        return "Hello";
+      }
+    };
+
+    service.postRequestBody(a);
+    assertThat(writeCount.get()).isEqualTo(1);
+  }
+
+  @Test public void requestThrowingBeforeExecuteFailsExecute() throws IOException {
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(server.url("/"))
+        .addConverterFactory(new StringConverterFactory())
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .build();
+    Service service = retrofit.create(Service.class);
+
+    server.enqueue(new MockResponse());
+
+    final AtomicInteger writeCount = new AtomicInteger();
+    Object a = new Object() {
+      @Override public String toString() {
+        writeCount.incrementAndGet();
+        throw new RuntimeException("Broken!");
+      }
+    };
+
+    try {
+      service.postRequestBody(a);
+      fail();
+    } catch (RuntimeException e) {
+      assertThat(e).hasMessage("Broken!");
+    }
+    assertThat(writeCount.get()).isEqualTo(1);
+  }
+
+  @Test public void requestAfterExecuteThrowingAlsoThrows() throws IOException {
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(server.url("/"))
+        .addConverterFactory(new StringConverterFactory())
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .build();
+    Service service = retrofit.create(Service.class);
+
+    server.enqueue(new MockResponse());
+
+    final AtomicInteger writeCount = new AtomicInteger();
+    Object a = new Object() {
+      @Override public String toString() {
+        writeCount.incrementAndGet();
+        throw new RuntimeException("Broken!");
+      }
+    };
+
+    try {
+      service.postRequestBody(a);
+      fail();
+    } catch (RuntimeException e) {
+      assertThat(e).hasMessage("Broken!");
+    }
+    assertThat(writeCount.get()).isEqualTo(1);
   }
 
   @Test public void conversionProblemIncomingMaskedByConverterIsUnwrapped() throws IOException {
