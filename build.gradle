@@ -35,8 +35,7 @@ dependencies {
   testImplementation deps.converterGson
 }
 
-// Oder matters
-apply from: rootProject.file("gradle/scan.gradle")
+apply from: rootProject.file("gradle/scan.gradle")    // Must be first
 apply from: rootProject.file("gradle/compile.gradle")
 apply from: rootProject.file("gradle/publish.gradle")
 apply from: rootProject.file("gradle/quality.gradle")

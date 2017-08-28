@@ -1,6 +1,8 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 compileJava {
-  sourceCompatibility = project.ext.sourceCompatibilityVersion
-  targetCompatibility = project.ext.targetCompatibilityVersion
+  sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+  targetCompatibility = rootProject.ext.targetCompatibilityVersion
 
   // Show all warnings except boot classpath
   configure(options) {
@@ -17,12 +19,15 @@ compileJava {
 test {
   // Turn on logging for all tests, filter to show failures/skips only
   testLogging {
-    exceptionFormat "full"
+    exceptionFormat TestExceptionFormat.FULL
     showCauses true
     showExceptions true
     showStackTraces true
     events "failed", "skipped"
   }
+
+  def maxWorkerCount = gradle.startParameter.maxWorkerCount
+  maxParallelForks = (maxWorkerCount < 2) ? 1 : maxWorkerCount / 2
 }
 
 javadoc {

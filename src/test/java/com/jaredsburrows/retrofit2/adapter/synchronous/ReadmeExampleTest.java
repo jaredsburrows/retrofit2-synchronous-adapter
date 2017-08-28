@@ -1,7 +1,6 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import okhttp3.ResponseBody;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -27,10 +26,10 @@ public final class ReadmeExampleTest {
   private Service example;
 
   interface Service {
-    @GET("/") String getString();
-    @GET("/") ResponseBody getBody();
-    @GET("/") Response<String> getStringResponse();
-    @GET("/") Response<ResponseBody> getResponseBodyResponse();
+    @GET("/") String string();                       // Return type directly
+    @GET("/") Response<String> responseString();     // Return Response information with type
+    @GET("/") ResponseBody body();                   // Return generic type directly
+    @GET("/") Response<ResponseBody> responseBody(); // Return Response information with generic type
   }
 
   @Before public void setUp() {
@@ -45,29 +44,29 @@ public final class ReadmeExampleTest {
   @Test public void string() throws IOException {
     server.enqueue(new MockResponse().setBody("Hi"));
 
-    String response = example.getString();
+    String response = example.string();
     assertThat(response).isEqualTo("Hi");
-  }
-
-  @Test public void body() throws IOException {
-    server.enqueue(new MockResponse().setBody("Hi"));
-
-    ResponseBody response = example.getBody();
-    assertThat(response.string()).isEqualTo("Hi");
   }
 
   @Test public void stringResponse() throws IOException {
     server.enqueue(new MockResponse().setBody("1234"));
 
-    Response<String> response = example.getStringResponse();
+    Response<String> response = example.responseString();
     assertThat(response.body()).isEqualTo("1234");
     assertThat(response.code()).isEqualTo(HTTP_OK);
+  }
+
+  @Test public void body() throws IOException {
+    server.enqueue(new MockResponse().setBody("Hi"));
+
+    ResponseBody response = example.body();
+    assertThat(response.string()).isEqualTo("Hi");
   }
 
   @Test public void responseBodyResponse() throws IOException {
     server.enqueue(new MockResponse().setBody("1234"));
 
-    Response<ResponseBody> response = example.getResponseBodyResponse();
+    Response<ResponseBody> response = example.responseBody();
     assertThat(response.body().string()).isEqualTo("1234");
     assertThat(response.code()).isEqualTo(HTTP_OK);
   }

@@ -22,20 +22,20 @@ Retrofit retrofit = new Retrofit.Builder()
 
 // Create your service
 interface Service {
-  @GET("/") String getString();                               // Return type directly
-  @GET("/") ResponseBody getBody();                           // Return generic type directly
-  @GET("/") Response<String> getStringResponse();             // Return Response information with type
-  @GET("/") Response<ResponseBody> getResponseBodyResponse(); // Return Response information with generic type
+  @GET("/") ApiResponse response();                 // Return type directly
+  @GET("/") Response<ApiResponse> responseApi();    // Return Response information with type
+  @GET("/") ResponseBody body();                    // Return generic type directly
+  @GET("/") Response<ResponseBody> responseBody();  // Return Response information with generic type
 }
 
 // Initiate the service
-Service service = retrofit.create(Service.class);
+Service example = retrofit.create(Service.class);
 
 // Make your HTTP request
-String string = service.getString();
-ResponseBody body = service.getBody();
-Response<String> response = service.getStringResponse();
-Response<ResponseBody> response = service.getResponseBodyResponse();
+ApiResponse response = example.response();
+ResponseBody body = example.body();
+Response<ResponseBody> responseBody = example.responseBody();
+Response<ApiResponse> responseApi = example.responseApi();
 
 ```
 
