@@ -6,7 +6,7 @@ jdk:
 install: true
 
 script:
-  - ./gradlew clean build jacocoTestReport coveralls --scan --parallel --stacktrace
+  - ./gradlew clean build jacocoTestReport coveralls --scan --stacktrace
 
 after_success:
   - .buildscript/deploySnapshot.sh

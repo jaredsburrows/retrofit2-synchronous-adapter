@@ -30,7 +30,7 @@ dependencies {
 
   testImplementation deps.junit
   testImplementation deps.assertjCore
-  testImplementation deps.mockitoCore
+  testImplementation deps.mockitoInline
   testImplementation deps.mockwebserver
   testImplementation deps.converterGson
 }
