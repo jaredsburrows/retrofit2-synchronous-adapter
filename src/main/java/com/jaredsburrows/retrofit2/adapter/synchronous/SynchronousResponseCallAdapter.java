@@ -11,10 +11,11 @@ import retrofit2.Response;
 /**
  * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
  */
-final class SynchronousCallAdapter<R> implements CallAdapter<R, Object> {
+@SuppressWarnings("ConstantConditions")
+final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response<R>> {
   private final Type responseType;
 
-  SynchronousCallAdapter(Type responseType) {
+  SynchronousResponseCallAdapter(Type responseType) {
     this.responseType = responseType;
   }
 
@@ -22,7 +23,7 @@ final class SynchronousCallAdapter<R> implements CallAdapter<R, Object> {
     return responseType;
   }
 
-  @Override public Object adapt(@Nonnull Call<R> call) {
+  @Override public Response<R> adapt(@Nonnull Call<R> call) {
     Response<R> response;
 
     // Make the initial call
@@ -35,10 +36,10 @@ final class SynchronousCallAdapter<R> implements CallAdapter<R, Object> {
     // Stop here if something goes wrong
     if (response == null) return null;
 
-    // If successful, return the response
-    if (response.isSuccessful()) return response.body();
+    // If successful(200 OK) and Response<T> type, return the response with body
+    if (response.isSuccessful()) return Response.success(response.body(), response.raw());
 
-    // If an error occurs, return HttpException including response
-    throw new HttpException(response);
+    // If unsuccessful(non 200 OK) and Response<T> type, return the response with body
+    return Response.error(response.code(), response.errorBody());
   }
 }

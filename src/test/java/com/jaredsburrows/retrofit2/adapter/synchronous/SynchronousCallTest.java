@@ -3,6 +3,7 @@ package com.jaredsburrows.retrofit2.adapter.synchronous;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.util.concurrent.atomic.AtomicInteger;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -19,6 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import retrofit2.Converter;
 import retrofit2.HttpException;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.helpers.StringConverterFactory;
 import retrofit2.http.Body;
@@ -52,6 +54,8 @@ public final class SynchronousCallTest {
     @GET("/") @Streaming ResponseBody getStreamingBody();
     @POST("/") String postString(@Body String body);
     @POST("/{a}") String postRequestBody(@Path("a") Object a);
+    @GET("/") Response<String> getStringResponse();
+    @GET("/") Response<ResponseBody> getResponseBodyResponse();
   }
 
   @Test public void http200Sync() throws IOException {
@@ -66,6 +70,21 @@ public final class SynchronousCallTest {
 
     String response = example.getString();
     assertThat(response).isEqualTo("Hi");
+  }
+
+  @Test public void http200SyncResponse() throws IOException {
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(server.url("/"))
+        .addConverterFactory(new StringConverterFactory())
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .build();
+    Service example = retrofit.create(Service.class);
+
+    server.enqueue(new MockResponse().setBody("Hi"));
+
+    Response<String> response = example.getStringResponse();
+    assertThat(response.body()).isEqualTo("Hi");
+    assertThat(response.code()).isEqualTo(HttpURLConnection.HTTP_OK);
   }
 
   @Test public void http404Sync() throws IOException {
@@ -365,6 +384,21 @@ public final class SynchronousCallTest {
 
     ResponseBody response = example.getBody();
     assertThat(response.string()).isEqualTo("1234");
+  }
+
+  @Test public void responseResponseBody() throws IOException {
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(server.url("/"))
+        .addConverterFactory(new StringConverterFactory())
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .build();
+    Service example = retrofit.create(Service.class);
+
+    server.enqueue(new MockResponse().setBody("1234"));
+
+    Response<ResponseBody> response = example.getResponseBodyResponse();
+    assertThat(response.body().string()).isEqualTo("1234");
+    assertThat(response.code()).isEqualTo(HttpURLConnection.HTTP_OK);
   }
 
   @Test public void responseBodyBuffers() throws IOException {

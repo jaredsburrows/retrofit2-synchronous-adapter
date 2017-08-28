@@ -15,6 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.helpers.StringConverterFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory} instead.
@@ -43,28 +44,30 @@ public final class SynchronousCallAdapterFactoryTest {
     Type bodyClass = new TypeToken<String>() {}.getType();
     assertThat(factory.get(bodyClass, NO_ANNOTATIONS, retrofit).responseType())
         .isEqualTo(String.class);
-    Type bodyWildcard = new TypeToken<List<? extends String>>() {}.getType();
-    assertThat(factory.get(bodyWildcard, NO_ANNOTATIONS, retrofit).responseType())
-        .isEqualTo(new TypeToken<List<? extends String>>() {}.getType());
     Type bodyGeneric = new TypeToken<List<String>>() {}.getType();
     assertThat(factory.get(bodyGeneric, NO_ANNOTATIONS, retrofit).responseType())
         .isEqualTo(new TypeToken<List<String>>() {}.getType());
     Type responseClass = new TypeToken<Response<String>>() {}.getType();
     assertThat(factory.get(responseClass, NO_ANNOTATIONS, retrofit).responseType())
-        .isEqualTo(new TypeToken<Response<String>>() {}.getType());
+        .isEqualTo(String.class);
     Type responseWildcard = new TypeToken<Response<? extends String>>() {}.getType();
     assertThat(factory.get(responseWildcard, NO_ANNOTATIONS, retrofit).responseType())
-        .isEqualTo(new TypeToken<Response<? extends String>>() {}.getType());
-    Type resultClass = new TypeToken<Response<String>>() {}.getType();
-    assertThat(factory.get(resultClass, NO_ANNOTATIONS, retrofit).responseType())
-        .isEqualTo(new TypeToken<Response<String>>() {}.getType());
-    Type resultWildcard = new TypeToken<Response<? extends String>>() {}.getType();
-    assertThat(factory.get(resultWildcard, NO_ANNOTATIONS, retrofit).responseType())
-        .isEqualTo(new TypeToken<Response<? extends String>>() {}.getType());
+        .isEqualTo(String.class);
   }
 
   @Test public void rawTypeReturnsNull() {
     // Act and Assert
     assertThat(factory.get(Call.class, NO_ANNOTATIONS, retrofit)).isNull();
+  }
+
+  @Test public void rawResponseTypeThrows() {
+    Type observableType = new TypeToken<Response>() {}.getType();
+    try {
+      factory.get(observableType, NO_ANNOTATIONS, retrofit);
+      fail();
+    } catch (IllegalStateException e) {
+      assertThat(e).hasMessage(
+          "Response must be parameterized as Response<Foo> or Response<? extends Foo>");
+    }
   }
 }
