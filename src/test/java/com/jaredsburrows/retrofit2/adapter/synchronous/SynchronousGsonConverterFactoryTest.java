@@ -85,7 +85,7 @@ public final class SynchronousGsonConverterFactoryTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(GsonConverterFactory.create(gson))
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     service = retrofit.create(Service.class);
   }

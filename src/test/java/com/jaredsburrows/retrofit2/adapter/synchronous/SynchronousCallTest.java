@@ -61,7 +61,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -75,7 +75,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -96,7 +96,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -124,7 +124,7 @@ public final class SynchronousCallTest {
             };
           }
         })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -150,7 +150,7 @@ public final class SynchronousCallTest {
             };
           }
         })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -168,7 +168,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service service = retrofit.create(Service.class);
 
@@ -190,7 +190,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service service = retrofit.create(Service.class);
 
@@ -217,7 +217,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service service = retrofit.create(Service.class);
 
@@ -276,7 +276,7 @@ public final class SynchronousCallTest {
             };
           }
         })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -305,7 +305,7 @@ public final class SynchronousCallTest {
             return converter;
           }
         })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -331,7 +331,7 @@ public final class SynchronousCallTest {
             return converter;
           }
         })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -346,7 +346,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -360,7 +360,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -374,7 +374,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -395,7 +395,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
@@ -416,7 +416,7 @@ public final class SynchronousCallTest {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous call adapter
+        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
         .build();
     Service example = retrofit.create(Service.class);
 
