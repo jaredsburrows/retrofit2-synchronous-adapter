@@ -2,14 +2,12 @@
 
 [![License](https://img.shields.io/badge/license-apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Build Status](https://travis-ci.org/jaredsburrows/retrofit2-synchronous-adapter.svg?branch=master)](https://travis-ci.org/jaredsburrows/retrofit2-synchronous-adapter)
-[![Coverage Status](https://coveralls.io/repos/github/jaredsburrows/retrofit2-synchronous-adapter/badge.svg?branch=master)](https://coveralls.io/github/jaredsburrows/retrofit2-synchronous-adapter?branch=master)
 [![Twitter Follow](https://img.shields.io/twitter/follow/jaredsburrows.svg?style=social)](https://twitter.com/jaredsburrows)
 
 
 A synchronous `CallAdapter.Factory` implementation for Retrofit 2.
 
 This project brings Retrofit 1's synchronous usage to Retrofit 2.
-
 
 ## Usage
 
@@ -39,16 +37,44 @@ Response<ApiResponse> responseApi = example.responseApi();
 
 ```
 
-
 ## Download
 
-Gradle:
+**Release:**
 ```groovy
 repositories {
   jcenter()
 }
-  
-compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.4.0"
-```
 
+dependencies {
+  compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.4.0"
+}
+```
+Release versions are available in the JFrog Bintray repository: https://bintray.com/jaredsburrows/maven/retrofit2-synchronous-adapter
+
+**Snapshot:**
+```groovy
+repositories {
+  maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local/" }
+}
+
+dependencies {
+  compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.5.0-SNAPSHOT"
+}
+```
 Snapshot versions are available in the JFrog Artifactory repository: https://oss.jfrog.org/webapp/#/builds/retrofit2-synchronous-adapter
+
+## License
+
+    Copyright (C) 2017 Jared Burrows
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

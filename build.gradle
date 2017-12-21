@@ -1,27 +1,25 @@
 plugins {
-  id "com.gradle.build-scan" version "1.8"
-  id "com.github.kt3k.coveralls" version "2.8.1"
-  id "net.ltgt.errorprone" version "0.0.10"
+  id "com.gradle.build-scan" version "1.11"
+  id "net.ltgt.errorprone" version "0.0.13"
   id "com.jfrog.artifactory" version "4.4.18"
-  id "com.jfrog.bintray" version "1.7.3"
-  id "com.github.ben-manes.versions" version "0.15.0"
+  id "com.jfrog.bintray" version "1.8.0"
+  id "com.github.ben-manes.versions" version "0.17.0"
   id "java-library"
   id "maven-publish"
-  id "jacoco"
 }
 
 repositories {
   maven { url "https://plugins.gradle.org/m2/" }
 }
 
-apply from: rootProject.file("gradle/versions.gradle")
+apply from: rootProject.file("gradle/dependencies.gradle")
 
 group = GROUP
 version = VERSION_NAME
 description = POM_DESCRIPTION
 
-sourceCompatibility = ext.sourceCompatibilityVersion
-targetCompatibility = ext.sourceCompatibilityVersion
+sourceCompatibility = ext.javaVersion
+targetCompatibility = ext.javaVersion
 
 dependencies {
   implementation deps.retrofit
@@ -35,8 +33,7 @@ dependencies {
   testImplementation deps.converterGson
 }
 
-apply from: rootProject.file("gradle/scan.gradle")    // Must be first
+apply from: rootProject.file("gradle/scan.gradle")
 apply from: rootProject.file("gradle/compile.gradle")
 apply from: rootProject.file("gradle/publish.gradle")
-apply from: rootProject.file("gradle/quality.gradle")
 apply from: rootProject.file("gradle/wrapper.gradle")
