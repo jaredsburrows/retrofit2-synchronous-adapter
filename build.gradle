@@ -1,15 +1,15 @@
 plugins {
-  id "com.gradle.build-scan" version "1.11"
-  id "net.ltgt.errorprone" version "0.0.13"
+  id "com.gradle.build-scan" version "1.12.1"
   id "com.jfrog.artifactory" version "4.4.18"
   id "com.jfrog.bintray" version "1.8.0"
   id "com.github.ben-manes.versions" version "0.17.0"
+  id "net.ltgt.errorprone" version "0.0.13"
   id "java-library"
   id "maven-publish"
 }
 
 repositories {
-  maven { url "https://plugins.gradle.org/m2/" }
+  jcenter()
 }
 
 apply from: rootProject.file("gradle/dependencies.gradle")
@@ -20,6 +20,18 @@ description = POM_DESCRIPTION
 
 sourceCompatibility = ext.javaVersion
 targetCompatibility = ext.javaVersion
+
+jar {
+  manifest {
+    attributes(
+      "Implementation-Title": POM_NAME,
+      "Implementation-Version": version,
+      "Built-By": System.getProperty("user.name"),
+      "Built-Date": new Date(),
+      "Built-JDK": System.getProperty("java.version"),
+      "Built-Gradle": gradle.gradleVersion)
+  }
+}
 
 dependencies {
   implementation deps.retrofit
@@ -36,4 +48,3 @@ dependencies {
 apply from: rootProject.file("gradle/scan.gradle")
 apply from: rootProject.file("gradle/compile.gradle")
 apply from: rootProject.file("gradle/publish.gradle")
-apply from: rootProject.file("gradle/wrapper.gradle")
