@@ -141,6 +141,7 @@ bintray {
     websiteUrl = POM_URL
     issueTrackerUrl = POM_ISSUE_URL
     vcsUrl = POM_URL
+    labels = ["retrofit2", "synchronous", "adapter"]
     githubRepo = BINTRAY_GITHUB_REPO
     githubReleaseNotesFile = "README.md"
 

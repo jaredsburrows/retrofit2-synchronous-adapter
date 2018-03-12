@@ -19,9 +19,10 @@ test {
     showCauses true
     showExceptions true
     showStackTraces true
-    events = ["failed", "skipped"]
+    events "failed", "skipped"
   }
 
+  failFast = true
   maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
 }
 

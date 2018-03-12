@@ -45,6 +45,6 @@ dependencies {
   testImplementation deps.converterGson
 }
 
-apply from: rootProject.file("gradle/scan.gradle")
-apply from: rootProject.file("gradle/compile.gradle")
-apply from: rootProject.file("gradle/publish.gradle")
+apply from: "gradle/scan.gradle"
+apply from: "gradle/compile.gradle"
+apply from: "gradle/publish.gradle"
