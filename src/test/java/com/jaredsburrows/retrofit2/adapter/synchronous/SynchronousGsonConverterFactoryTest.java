@@ -24,8 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory} instead.
  *
  * Based off of: https://github.com/square/retrofit/blob/master/retrofit-converters/gson/src/test/java/retrofit2/converter/gson/GsonConverterFactoryTest.java.
- *
- * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
  */
 public final class SynchronousGsonConverterFactoryTest {
   interface AnInterface {

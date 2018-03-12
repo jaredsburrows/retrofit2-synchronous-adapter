@@ -5,12 +5,8 @@ import java.lang.reflect.Type;
 import javax.annotation.Nonnull;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
-import retrofit2.HttpException;
 import retrofit2.Response;
 
-/**
- * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
- */
 @SuppressWarnings("ConstantConditions")
 final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response<R>> {
   private final Type responseType;

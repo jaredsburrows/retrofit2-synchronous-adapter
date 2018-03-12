@@ -40,8 +40,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
  * Based off of
  *  - https://github.com/square/retrofit/blob/master/retrofit/src/test/java/retrofit2/CallTest.java.
  *  - https://github.com/square/retrofit/blob/master/retrofit-adapters/java8/src/test/java/retrofit2/adapter/java8/CompletableFutureTest.java
- *
- * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
  */
 @SuppressWarnings("ConstantConditions")
 public final class SynchronousCallTest {

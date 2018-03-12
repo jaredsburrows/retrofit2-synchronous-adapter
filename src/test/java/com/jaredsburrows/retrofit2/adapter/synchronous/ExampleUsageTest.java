@@ -16,8 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * This test is to valid the code in the readme.
- *
- * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
  */
 @SuppressWarnings("ConstantConditions")
 public final class ExampleUsageTest {

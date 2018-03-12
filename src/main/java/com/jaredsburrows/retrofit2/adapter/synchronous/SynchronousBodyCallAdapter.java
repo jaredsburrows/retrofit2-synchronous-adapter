@@ -8,9 +8,6 @@ import retrofit2.CallAdapter;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
-/**
- * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
- */
 final class SynchronousBodyCallAdapter<R> implements CallAdapter<R, Object> {
   private final Type responseType;
 

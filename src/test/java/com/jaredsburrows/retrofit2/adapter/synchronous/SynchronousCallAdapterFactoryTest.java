@@ -21,8 +21,6 @@ import static org.junit.Assert.fail;
  * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory} instead.
  *
  * Based off of: https://github.com/square/retrofit/blob/master/retrofit-adapters/guava/src/test/java/retrofit2/adapter/guava/GuavaCallAdapterFactoryTest.java
- *
- * @author <a href="mailto:jaredsburrows@gmail.com">Jared Burrows</a>
  */
 @SuppressWarnings("ConstantConditions")
 public final class SynchronousCallAdapterFactoryTest {
