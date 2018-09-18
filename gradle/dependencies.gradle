@@ -1,6 +1,6 @@
 ext {
   javaVersion = "1.7"
-  retrofitVersion = "2.3.0"
+  retrofitVersion = "2.4.0"
 }
 
 ext.deps = [
