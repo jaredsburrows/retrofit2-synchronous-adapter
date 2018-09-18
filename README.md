@@ -49,7 +49,7 @@ dependencies {
   compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.4.0"
 }
 ```
-Release versions are available in the JFrog Bintray repository: https://bintray.com/jaredsburrows/maven/retrofit2-synchronous-adapter
+Release versions are available in the [JFrog Bintray repository](https://jcenter.bintray.com/).
 
 **Snapshot:**
 ```groovy
@@ -61,7 +61,7 @@ dependencies {
   compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.5.0-SNAPSHOT"
 }
 ```
-Snapshot versions are available in the JFrog Artifactory repository: https://oss.jfrog.org/webapp/#/builds/retrofit2-synchronous-adapter
+Snapshot versions are available in the [JFrog Artifactory repository](https://oss.jfrog.org/artifactory/libs-snapshot/).
 
 ## License
 
