@@ -58,6 +58,7 @@ public final class SynchronousCallAdapterFactoryTest {
     assertThat(factory.get(Call.class, NO_ANNOTATIONS, retrofit)).isNull();
   }
 
+  @SuppressWarnings("rawtypes") // we want to ensure raw types cannot be used
   @Test public void rawResponseTypeThrows() {
     Type observableType = new TypeToken<Response>() {}.getType();
     try {
