@@ -22,10 +22,9 @@ public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
     return new SynchronousCallAdapterFactory();
   }
 
-  @Override
-  public @Nullable CallAdapter<?, ?> get(@Nonnull Type returnType,
-                                         @Nonnull Annotation[] annotations,
-                                         @Nonnull Retrofit retrofit) {
+  @Override public @Nullable CallAdapter<?, ?> get(@Nonnull Type returnType,
+                                                   @Nonnull Annotation[] annotations,
+                                                   @Nonnull Retrofit retrofit) {
     // Prevent the Async calls via Call class
     if (getRawType(returnType) == Call.class) return null;
 

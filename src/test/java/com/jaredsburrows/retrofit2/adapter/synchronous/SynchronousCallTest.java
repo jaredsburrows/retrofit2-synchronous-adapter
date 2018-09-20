@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.annotation.Nonnull;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -116,7 +117,7 @@ public final class SynchronousCallTest {
               Annotation[] parameterAnnotations, Annotation[] methodAnnotations,
               Retrofit retrofit) {
             return new Converter<String, RequestBody>() {
-              @Override public RequestBody convert(String value) throws IOException {
+              @Override public RequestBody convert(@Nonnull String value) throws IOException {
                 throw new UnsupportedOperationException("I am broken!");
               }
             };
@@ -142,7 +143,7 @@ public final class SynchronousCallTest {
           public Converter<ResponseBody, ?> responseBodyConverter(Type type,
               Annotation[] annotations, Retrofit retrofit) {
             return new Converter<ResponseBody, String>() {
-              @Override public String convert(ResponseBody value) throws IOException {
+              @Override public String convert(@Nonnull ResponseBody value) throws IOException {
                 throw new UnsupportedOperationException("I am broken!");
               }
             };
@@ -242,11 +243,11 @@ public final class SynchronousCallTest {
     // MWS has no way to trigger IOExceptions during the response body so use an interceptor.
     OkHttpClient client = new OkHttpClient.Builder() //
         .addInterceptor(new Interceptor() {
-          @Override public okhttp3.Response intercept(Chain chain) throws IOException {
+          @Override public okhttp3.Response intercept(@Nonnull Chain chain) throws IOException {
             okhttp3.Response response = chain.proceed(chain.request());
             ResponseBody body = response.body();
             BufferedSource source = Okio.buffer(new ForwardingSource(body.source()) {
-              @Override public long read(Buffer sink, long byteCount) throws IOException {
+              @Override public long read(@Nonnull Buffer sink, long byteCount) throws IOException {
                 throw new IOException("cause");
               }
             });
@@ -263,7 +264,7 @@ public final class SynchronousCallTest {
           public Converter<ResponseBody, ?> responseBodyConverter(Type type,
               Annotation[] annotations, Retrofit retrofit) {
             return new Converter<ResponseBody, String>() {
-              @Override public String convert(ResponseBody value) throws IOException {
+              @Override public String convert(@Nonnull ResponseBody value) throws IOException {
                 try {
                   return value.string();
                 } catch (IOException e) {
@@ -290,7 +291,7 @@ public final class SynchronousCallTest {
 
   @Test public void http204SkipsConverter() throws IOException {
     final Converter<ResponseBody, String> converter = spy(new Converter<ResponseBody, String>() {
-      @Override public String convert(ResponseBody value) throws IOException {
+      @Override public String convert(@Nonnull ResponseBody value) throws IOException {
         return value.string();
       }
     });
@@ -316,7 +317,7 @@ public final class SynchronousCallTest {
 
   @Test public void http205SkipsConverter() throws IOException {
     final Converter<ResponseBody, String> converter = spy(new Converter<ResponseBody, String>() {
-      @Override public String convert(ResponseBody value) throws IOException {
+      @Override public String convert(@Nonnull ResponseBody value) throws IOException {
         return value.string();
       }
     });
