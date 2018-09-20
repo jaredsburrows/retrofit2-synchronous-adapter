@@ -12,7 +12,7 @@ repositories {
   jcenter()
 }
 
-apply from: rootProject.file("gradle/dependencies.gradle")
+apply from: "gradle/dependencies.gradle"
 
 group = GROUP
 version = VERSION_NAME
