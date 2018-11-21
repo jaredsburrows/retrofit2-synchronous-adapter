@@ -1,6 +1,6 @@
 ext.versions = [
   'java'    : '1.8',
-  'retrofit': '2.4.0'
+  'retrofit': '2.5.0'
 ]
 
 ext.deps = [
