@@ -2,7 +2,6 @@ package com.jaredsburrows.retrofit2.adapter.synchronous;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import javax.annotation.Nonnull;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -22,7 +21,7 @@ final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response
     return responseType;
   }
 
-  @Override public Response<R> adapt(@Nonnull Call<R> call) {
+  @Override public Response<R> adapt(Call<R> call) {
     Response<R> response;
 
     // Make the initial call
@@ -47,8 +46,8 @@ final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response
         return Response.error(ResponseBody.create(DEFAULT_MEDIA_TYPE, ""), response.raw());
       } else {
         return response.raw() == null
-          ? Response.<R>error(response.code(), errorBody)
-          : Response.<R>error(errorBody, response.raw());
+          ? Response.error(response.code(), errorBody)
+          : Response.error(errorBody, response.raw());
       }
     }
   }

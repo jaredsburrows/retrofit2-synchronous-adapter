@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * This test is to valid the code in the readme.
  */
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "NullableProblems"})
 public final class ExampleUsageTest {
   @Rule public final MockWebServer server = new MockWebServer();
   private Service example;
@@ -43,25 +43,25 @@ public final class ExampleUsageTest {
     example = retrofit.create(Service.class);
   }
 
-  @Test public void testGsonDtoType() throws Exception {
+  @Test public void testGsonDtoType() {
     server.enqueue(new MockResponse().setBody("{\"name\":\"value\"}"));
     TestDto response = example.returnDto();
     assertThat(response.name).isEqualTo("value");
   }
 
-  @Test public void testResponseOfGsonDto() throws Exception {
+  @Test public void testResponseOfGsonDto() {
     server.enqueue(new MockResponse().setBody("{\"name\":\"value\"}"));
     Response<TestDto> response = example.responseDto();
     assertThat(response.body().name).isEqualTo("value");
   }
 
-  @Test public void testVoidResponse() throws Exception {
+  @Test public void testVoidResponse() {
     server.enqueue(new MockResponse().setBody("{\"name\":\"value\"}"));
     Void response = example.returnVoid();
     assertThat(response).isNull();
   }
 
-  @Test public void testVoidResponseNoResponse() throws Exception {
+  @Test public void testVoidResponseNoResponse() {
     server.enqueue(new MockResponse());
     Void response = example.returnVoid();
     assertThat(response).isNull();
@@ -71,13 +71,13 @@ public final class ExampleUsageTest {
     assertThat(response2).isNull();
   }
 
-  @Test public void testResponseOfVoid() throws Exception {
+  @Test public void testResponseOfVoid() {
     server.enqueue(new MockResponse().setBody("{\"name\":\"value\"}"));
     Response<Void> response = example.responseVoid();
     assertThat(response.body()).isNull();
   }
 
-  @Test public void testResponseOfVoidNoResponse() throws Exception {
+  @Test public void testResponseOfVoidNoResponse() {
     server.enqueue(new MockResponse());
     Response<Void> response = example.responseVoid();
     assertThat(response.body()).isNull();
@@ -87,13 +87,13 @@ public final class ExampleUsageTest {
     assertThat(response2.body()).isNull();
   }
 
-  @Test public void testResponseBody() throws Exception {
+  @Test public void testResponseBody() {
     server.enqueue(new MockResponse().setBody("{\"name\":\"value\"}"));
     ResponseBody response = example.returnResponseBody();
     assertThat(response).isNotNull();
   }
 
-  @Test public void testResponseBodyNoResponse() throws Exception {
+  @Test public void testResponseBodyNoResponse() {
     server.enqueue(new MockResponse());
     ResponseBody response = example.returnResponseBody();
     assertThat(response).isNotNull();
@@ -103,13 +103,13 @@ public final class ExampleUsageTest {
     assertThat(response2).isNotNull();
   }
 
-  @Test public void testResponseOfResponseBody() throws Exception {
+  @Test public void testResponseOfResponseBody() {
     server.enqueue(new MockResponse().setBody("{\"name\":\"value\"}"));
     Response<ResponseBody> response = example.responseResponseBody();
     assertThat(response.body()).isNotNull();
   }
 
-  @Test public void testResponseOfResponseBodyNoResponse() throws Exception {
+  @Test public void testResponseOfResponseBodyNoResponse() {
     server.enqueue(new MockResponse());
     Response<ResponseBody> response = example.responseResponseBody();
     assertThat(response.body()).isNotNull(); // empty but non-null
