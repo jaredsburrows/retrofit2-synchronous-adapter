@@ -46,7 +46,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.4.0"
+  compile 'com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.5.0'
 }
 ```
 Release versions are available in the [JFrog Bintray repository](https://jcenter.bintray.com/).
@@ -54,11 +54,11 @@ Release versions are available in the [JFrog Bintray repository](https://jcenter
 **Snapshot:**
 ```groovy
 repositories {
-  maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local/" }
+  maven { url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/' }
 }
 
 dependencies {
-  compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.5.0-SNAPSHOT"
+  compile 'com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.6.0-SNAPSHOT'
 }
 ```
 Snapshot versions are available in the [JFrog Artifactory repository](https://oss.jfrog.org/artifactory/libs-snapshot/).
