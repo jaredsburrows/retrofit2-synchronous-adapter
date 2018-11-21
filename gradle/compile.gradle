@@ -1,12 +1,12 @@
 tasks.withType(JavaCompile) {
-  sourceCompatibility = rootProject.ext.javaVersion
-  targetCompatibility = rootProject.ext.javaVersion
+  sourceCompatibility = rootProject.versions.java
+  targetCompatibility = rootProject.versions.java
 
   configure(options) {
-    compilerArgs << "-Xlint:all"
-    compilerArgs << "-Xlint:-options"
-    compilerArgs << "-Werror"
-    encoding = "utf-8"
+    compilerArgs << '-Xlint:all'
+    compilerArgs << '-Xlint:-options'
+    compilerArgs << '-Werror'
+    encoding = 'utf-8'
     fork = true
   }
 }
@@ -14,11 +14,11 @@ tasks.withType(JavaCompile) {
 tasks.withType(Test) {
   // Turn on logging for all tests, filter to show failures/skips only
   testLogging {
-    exceptionFormat "full"
+    exceptionFormat 'full'
     showCauses true
     showExceptions true
     showStackTraces true
-    events "failed", "skipped"
+    events 'failed', 'skipped'
   }
 
   failFast = true
@@ -29,23 +29,23 @@ tasks.withType(Javadoc) {
   title = "${project.name} ${project.version}"
   configure(options) {
     header = project.name
-    encoding "UTF-8"
-    docEncoding "UTF-8"
-    charSet "UTF-8"
+    encoding 'UTF-8'
+    docEncoding 'UTF-8'
+    charSet 'UTF-8'
     linkSource true
     author = true
-    links("http://docs.oracle.com/javase/8/docs/api/",
-            "http://docs.oracle.com/javaee/7/api/")
+    links('http://docs.oracle.com/javase/8/docs/api/',
+            'http://docs.oracle.com/javaee/7/api/')
     exclude "**/*Test.java"
-    if (JavaVersion.current().java8Compatible) addStringOption("Xdoclint:none", "-quiet")
+    if (JavaVersion.current().java8Compatible) addStringOption('Xdoclint:none', '-quiet')
   }
 }
 
 // Prevent forked processes from stealing focus (on MacOS at least)
 tasks.withType(JavaForkOptions) {
   // should improve memory on a 64bit JVM
-  jvmArgs "-XX:+UseCompressedOops"
+  jvmArgs '-XX:+UseCompressedOops'
   // should avoid GradleWorkerMain to steal focus
-  jvmArgs "-Djava.awt.headless=true"
-  jvmArgs "-Dapple.awt.UIElement=true"
+  jvmArgs '-Djava.awt.headless=true'
+  jvmArgs '-Dapple.awt.UIElement=true'
 }
