@@ -38,6 +38,11 @@ dependencies {
 
   compileOnly deps.jsr305
 
+  if (project.hasProperty('errorprone')) {
+    errorprone deps.errorprone.core
+    errorproneJavac deps.errorprone.javac
+  }
+
   testImplementation deps.junit
   testImplementation deps.assertjCore
   testImplementation deps.mockitoInline
