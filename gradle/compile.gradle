@@ -40,12 +40,3 @@ tasks.withType(Javadoc) {
     if (JavaVersion.current().java8Compatible) addStringOption('Xdoclint:none', '-quiet')
   }
 }
-
-// Prevent forked processes from stealing focus (on MacOS at least)
-tasks.withType(JavaForkOptions) {
-  // should improve memory on a 64bit JVM
-  jvmArgs '-XX:+UseCompressedOops'
-  // should avoid GradleWorkerMain to steal focus
-  jvmArgs '-Djava.awt.headless=true'
-  jvmArgs '-Dapple.awt.UIElement=true'
-}
