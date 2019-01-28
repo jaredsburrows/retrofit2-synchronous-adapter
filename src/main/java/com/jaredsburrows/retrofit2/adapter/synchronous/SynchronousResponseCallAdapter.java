@@ -31,9 +31,6 @@ final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response
       throw new RuntimeException(e);
     }
 
-    // Stop here if something goes wrong
-    if (response == null) return null;
-
     if (response.isSuccessful()) {
       // If successful(200 OK) and Response<T> type, return the response with body
       return response.raw() == null
@@ -41,7 +38,7 @@ final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response
         : Response.success(response.body(), response.raw());
     } else {
       // If unsuccessful(non 200 OK) and Response<T> type, return the response with body
-      final ResponseBody errorBody = response.errorBody();
+      ResponseBody errorBody = response.errorBody();
       if (errorBody == null) {
         return Response.error(ResponseBody.create(DEFAULT_MEDIA_TYPE, ""), response.raw());
       } else {

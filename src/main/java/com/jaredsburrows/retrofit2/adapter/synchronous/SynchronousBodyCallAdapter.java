@@ -20,7 +20,7 @@ final class SynchronousBodyCallAdapter<R> implements CallAdapter<R, Object> {
   }
 
   @SuppressWarnings("NullableProblems")
-  @Override public @Nullable Object adapt(Call<R> call) {
+  @Override @Nullable public Object adapt(Call<R> call) {
     Response<R> response;
 
     // Make the initial call
@@ -31,7 +31,9 @@ final class SynchronousBodyCallAdapter<R> implements CallAdapter<R, Object> {
     }
 
     // If successful(200 OK), return the response with body
-    if (response.isSuccessful()) return response.body();
+    if (response.isSuccessful()) {
+      return response.body();
+    }
 
     // If an error occurs, return HttpException including response
     throw new HttpException(response);

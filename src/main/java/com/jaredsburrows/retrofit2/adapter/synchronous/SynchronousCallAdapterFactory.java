@@ -21,11 +21,13 @@ public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
     return new SynchronousCallAdapterFactory();
   }
 
-  @Override public @Nullable CallAdapter<?, ?> get(Type returnType,
+  @Override @Nullable public CallAdapter<?, ?> get(Type returnType,
                                                    Annotation[] annotations,
                                                    Retrofit retrofit) {
     // Prevent the Async calls via Call class
-    if (getRawType(returnType) == Call.class) return null;
+    if (getRawType(returnType) == Call.class) {
+      return null;
+    }
 
     // Return type is not Response<T>. Use it for body-only adapter.
     if (getRawType(returnType) != Response.class) {
@@ -39,7 +41,7 @@ public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
     }
 
     // Handle Response<T> return types
-    final Type responseType = getParameterUpperBound(0, (ParameterizedType) returnType);
+    Type responseType = getParameterUpperBound(0, (ParameterizedType) returnType);
     return new SynchronousResponseCallAdapter<>(responseType);
   }
 }
