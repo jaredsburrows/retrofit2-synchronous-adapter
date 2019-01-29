@@ -13,7 +13,7 @@ import retrofit2.Retrofit;
  * From: https://github.com/square/retrofit/blob/master/retrofit-adapters/guava/src/test/java/retrofit2/adapter/guava/StringConverterFactory.java
  */
 public class StringConverterFactory extends Converter.Factory {
-  private static final MediaType MEDIA_TYPE = MediaType.parse("text/plain");
+  private static final MediaType MEDIA_TYPE = MediaType.get("text/plain");
 
   @Nullable @Override public Converter<ResponseBody, ?> responseBodyConverter(Type type,
       Annotation[] annotations, Retrofit retrofit) {
