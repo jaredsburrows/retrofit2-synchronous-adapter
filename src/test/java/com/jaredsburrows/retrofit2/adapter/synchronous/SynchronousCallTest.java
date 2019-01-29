@@ -5,7 +5,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nonnull;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -42,7 +41,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
  *  - https://github.com/square/retrofit/blob/master/retrofit/src/test/java/retrofit2/CallTest.java.
  *  - https://github.com/square/retrofit/blob/master/retrofit-adapters/java8/src/test/java/retrofit2/adapter/java8/CompletableFutureTest.java
  */
-@SuppressWarnings("ConstantConditions")
 public final class SynchronousCallTest {
   @Rule public final MockWebServer server = new MockWebServer();
 
@@ -56,7 +54,7 @@ public final class SynchronousCallTest {
     @GET("/") Response<ResponseBody> getResponseBodyResponse();
   }
 
-  @Test public void http200Sync() throws IOException {
+  @Test public void http200Sync() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
@@ -70,7 +68,7 @@ public final class SynchronousCallTest {
     assertThat(response).isEqualTo("Hi");
   }
 
-  @Test public void http404Sync() throws IOException {
+  @Test public void http404Sync() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
@@ -108,7 +106,7 @@ public final class SynchronousCallTest {
     }
   }
 
-  @Test public void conversionProblemOutgoingSync() throws IOException {
+  @Test public void conversionProblemOutgoingSync() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory() {
@@ -116,10 +114,8 @@ public final class SynchronousCallTest {
           public Converter<?, RequestBody> requestBodyConverter(Type type,
               Annotation[] parameterAnnotations, Annotation[] methodAnnotations,
               Retrofit retrofit) {
-            return new Converter<String, RequestBody>() {
-              @Override public RequestBody convert(@Nonnull String value) throws IOException {
-                throw new UnsupportedOperationException("I am broken!");
-              }
+            return (Converter<String, RequestBody>) value -> {
+              throw new UnsupportedOperationException("I am broken!");
             };
           }
         })
@@ -135,17 +131,15 @@ public final class SynchronousCallTest {
     }
   }
 
-  @Test public void conversionProblemIncomingSync() throws IOException {
+  @Test public void conversionProblemIncomingSync() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory() {
           @Override
           public Converter<ResponseBody, ?> responseBodyConverter(Type type,
               Annotation[] annotations, Retrofit retrofit) {
-            return new Converter<ResponseBody, String>() {
-              @Override public String convert(@Nonnull ResponseBody value) throws IOException {
-                throw new UnsupportedOperationException("I am broken!");
-              }
+            return (Converter<ResponseBody, String>) value -> {
+              throw new UnsupportedOperationException("I am broken!");
             };
           }
         })
@@ -163,7 +157,7 @@ public final class SynchronousCallTest {
     }
   }
 
-  @Test public void requestBeforeExecuteCreates() throws IOException {
+  @Test public void requestBeforeExecuteCreates() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
@@ -173,7 +167,7 @@ public final class SynchronousCallTest {
 
     server.enqueue(new MockResponse());
 
-    final AtomicInteger writeCount = new AtomicInteger();
+    AtomicInteger writeCount = new AtomicInteger();
     Object a = new Object() {
       @Override public String toString() {
         writeCount.incrementAndGet();
@@ -185,7 +179,7 @@ public final class SynchronousCallTest {
     assertThat(writeCount.get()).isEqualTo(1);
   }
 
-  @Test public void requestThrowingBeforeExecuteFailsExecute() throws IOException {
+  @Test public void requestThrowingBeforeExecuteFailsExecute() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
@@ -195,7 +189,7 @@ public final class SynchronousCallTest {
 
     server.enqueue(new MockResponse());
 
-    final AtomicInteger writeCount = new AtomicInteger();
+    AtomicInteger writeCount = new AtomicInteger();
     Object a = new Object() {
       @Override public String toString() {
         writeCount.incrementAndGet();
@@ -212,7 +206,7 @@ public final class SynchronousCallTest {
     assertThat(writeCount.get()).isEqualTo(1);
   }
 
-  @Test public void requestAfterExecuteThrowingAlsoThrows() throws IOException {
+  @Test public void requestAfterExecuteThrowingAlsoThrows() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
@@ -222,7 +216,7 @@ public final class SynchronousCallTest {
 
     server.enqueue(new MockResponse());
 
-    final AtomicInteger writeCount = new AtomicInteger();
+    AtomicInteger writeCount = new AtomicInteger();
     Object a = new Object() {
       @Override public String toString() {
         writeCount.incrementAndGet();
@@ -239,21 +233,19 @@ public final class SynchronousCallTest {
     assertThat(writeCount.get()).isEqualTo(1);
   }
 
-  @Test public void conversionProblemIncomingMaskedByConverterIsUnwrapped() throws IOException {
+  @Test public void conversionProblemIncomingMaskedByConverterIsUnwrapped() {
     // MWS has no way to trigger IOExceptions during the response body so use an interceptor.
     OkHttpClient client = new OkHttpClient.Builder() //
-        .addInterceptor(new Interceptor() {
-          @Override public okhttp3.Response intercept(@Nonnull Chain chain) throws IOException {
-            okhttp3.Response response = chain.proceed(chain.request());
-            ResponseBody body = response.body();
-            BufferedSource source = Okio.buffer(new ForwardingSource(body.source()) {
-              @Override public long read(@Nonnull Buffer sink, long byteCount) throws IOException {
-                throw new IOException("cause");
-              }
-            });
-            body = ResponseBody.create(body.contentType(), body.contentLength(), source);
-            return response.newBuilder().body(body).build();
-          }
+        .addInterceptor(chain -> {
+          okhttp3.Response response = chain.proceed(chain.request());
+          ResponseBody body = response.body();
+          BufferedSource source = Okio.buffer(new ForwardingSource(body.source()) {
+            @Override public long read(@Nonnull Buffer sink, long byteCount) throws IOException {
+              throw new IOException("cause");
+            }
+          });
+          body = ResponseBody.create(body.contentType(), body.contentLength(), source);
+          return response.newBuilder().body(body).build();
         }).build();
 
     Retrofit retrofit = new Retrofit.Builder()
@@ -263,14 +255,12 @@ public final class SynchronousCallTest {
           @Override
           public Converter<ResponseBody, ?> responseBodyConverter(Type type,
               Annotation[] annotations, Retrofit retrofit) {
-            return new Converter<ResponseBody, String>() {
-              @Override public String convert(@Nonnull ResponseBody value) throws IOException {
-                try {
-                  return value.string();
-                } catch (IOException e) {
-                  // Some serialization libraries mask transport problems in runtime exceptions. Bad!
-                  throw new RuntimeException("wrapper", e);
-                }
+            return (Converter<ResponseBody, String>) value -> {
+              try {
+                return value.string();
+              } catch (IOException e) {
+                // Some serialization libraries mask transport problems in runtime exceptions. Bad!
+                throw new RuntimeException("wrapper", e);
               }
             };
           }
@@ -289,8 +279,8 @@ public final class SynchronousCallTest {
     }
   }
 
-  @Test public void http204SkipsConverter() throws IOException {
-    final Converter<ResponseBody, String> converter = spy(new Converter<ResponseBody, String>() {
+  @Test public void http204SkipsConverter() {
+    Converter<ResponseBody, String> converter = spy(new Converter<ResponseBody, String>() {
       @Override public String convert(@Nonnull ResponseBody value) throws IOException {
         return value.string();
       }
@@ -315,8 +305,8 @@ public final class SynchronousCallTest {
     verifyNoMoreInteractions(converter);
   }
 
-  @Test public void http205SkipsConverter() throws IOException {
-    final Converter<ResponseBody, String> converter = spy(new Converter<ResponseBody, String>() {
+  @Test public void http205SkipsConverter() {
+    Converter<ResponseBody, String> converter = spy(new Converter<ResponseBody, String>() {
       @Override public String convert(@Nonnull ResponseBody value) throws IOException {
         return value.string();
       }
@@ -341,7 +331,7 @@ public final class SynchronousCallTest {
     verifyNoMoreInteractions(converter);
   }
 
-  @Test public void successfulRequestResponseWhenMimeTypeMissing() throws Exception {
+  @Test public void successfulRequestResponseWhenMimeTypeMissing() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
@@ -369,7 +359,7 @@ public final class SynchronousCallTest {
     assertThat(response.string()).isEqualTo("1234");
   }
 
-  @Test public void responseBodyBuffers() throws IOException {
+  @Test public void responseBodyBuffers() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
@@ -390,7 +380,7 @@ public final class SynchronousCallTest {
     }
   }
 
-  @Test public void responseBodyStreams() throws IOException {
+  @Test public void responseBodyStreams() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())
@@ -411,7 +401,7 @@ public final class SynchronousCallTest {
     }
   }
 
-  @Test public void emptyResponse() throws IOException {
+  @Test public void emptyResponse() {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(server.url("/"))
         .addConverterFactory(new StringConverterFactory())

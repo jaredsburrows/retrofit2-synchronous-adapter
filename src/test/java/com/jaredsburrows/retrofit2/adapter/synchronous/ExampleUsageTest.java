@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * This test is to valid the code in the readme.
  */
-@SuppressWarnings({"ConstantConditions", "NullableProblems"})
 public final class ExampleUsageTest {
   @Rule public final MockWebServer server = new MockWebServer();
   private Service example;

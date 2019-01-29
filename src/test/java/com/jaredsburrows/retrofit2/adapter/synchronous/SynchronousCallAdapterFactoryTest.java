@@ -22,7 +22,6 @@ import static org.junit.Assert.fail;
  *
  * Based off of: https://github.com/square/retrofit/blob/master/retrofit-adapters/guava/src/test/java/retrofit2/adapter/guava/GuavaCallAdapterFactoryTest.java
  */
-@SuppressWarnings("ConstantConditions")
 public final class SynchronousCallAdapterFactoryTest {
   @Rule public final MockWebServer server = new MockWebServer();
   private static final Annotation[] NO_ANNOTATIONS = new Annotation[0];

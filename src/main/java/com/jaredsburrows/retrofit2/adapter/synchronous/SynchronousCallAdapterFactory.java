@@ -21,9 +21,8 @@ public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
     return new SynchronousCallAdapterFactory();
   }
 
-  @Override @Nullable public CallAdapter<?, ?> get(Type returnType,
-                                                   Annotation[] annotations,
-                                                   Retrofit retrofit) {
+  @Override @Nullable public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations,
+      Retrofit retrofit) {
     // Prevent the Async calls via Call class
     if (getRawType(returnType) == Call.class) {
       return null;
@@ -37,7 +36,7 @@ public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
     // Make sure Response<T> is parameterized
     if (!(returnType instanceof ParameterizedType)) {
       throw new IllegalStateException(
-        "Response must be parameterized as Response<Foo> or Response<? extends Foo>");
+          "Response must be parameterized as Response<Foo> or Response<? extends Foo>");
     }
 
     // Handle Response<T> return types

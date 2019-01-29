@@ -8,7 +8,6 @@ import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
 
-@SuppressWarnings("ConstantConditions")
 final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response<R>> {
   private static final MediaType DEFAULT_MEDIA_TYPE = MediaType.parse("text/plain");
   private final Type responseType;

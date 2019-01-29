@@ -19,7 +19,6 @@ final class SynchronousBodyCallAdapter<R> implements CallAdapter<R, Object> {
     return responseType;
   }
 
-  @SuppressWarnings("NullableProblems")
   @Override @Nullable public Object adapt(Call<R> call) {
     Response<R> response;
 

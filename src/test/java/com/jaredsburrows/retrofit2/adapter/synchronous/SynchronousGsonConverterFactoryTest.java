@@ -54,10 +54,8 @@ public final class SynchronousGsonConverterFactoryTest {
 
       String name = null;
       while (jsonReader.peek() != JsonToken.END_OBJECT) {
-        switch (jsonReader.nextName()) {
-          case "name":
-            name = jsonReader.nextString();
-            break;
+        if ("name".equals(jsonReader.nextName())) {
+          name = jsonReader.nextString();
         }
       }
 
@@ -88,7 +86,7 @@ public final class SynchronousGsonConverterFactoryTest {
     service = retrofit.create(Service.class);
   }
 
-  @Test public void anInterface() throws IOException, InterruptedException {
+  @Test public void anInterface() throws Exception {
     server.enqueue(new MockResponse().setBody("{\"name\":\"value\"}"));
 
     AnInterface response = service.anInterface(new AnImplementation("value"));
@@ -99,7 +97,7 @@ public final class SynchronousGsonConverterFactoryTest {
     assertThat(request.getHeader("Content-Type")).isEqualTo("application/json; charset=UTF-8");
   }
 
-  @Test public void anImplementation() throws IOException, InterruptedException {
+  @Test public void anImplementation() throws Exception {
     server.enqueue(new MockResponse().setBody("{\"theName\":\"value\"}"));
 
     AnImplementation response = service.anImplementation(new AnImplementation("value"));
@@ -110,7 +108,7 @@ public final class SynchronousGsonConverterFactoryTest {
     assertThat(request.getHeader("Content-Type")).isEqualTo("application/json; charset=UTF-8");
   }
 
-  @Test public void serializeUsesConfiguration() throws IOException, InterruptedException {
+  @Test public void serializeUsesConfiguration() throws Exception {
     server.enqueue(new MockResponse().setBody("{}"));
 
     service.anImplementation(new AnImplementation(null));
@@ -120,7 +118,7 @@ public final class SynchronousGsonConverterFactoryTest {
     assertThat(request.getHeader("Content-Type")).isEqualTo("application/json; charset=UTF-8");
   }
 
-  @Test public void deserializeUsesConfiguration() throws IOException, InterruptedException {
+  @Test public void deserializeUsesConfiguration() {
     server.enqueue(new MockResponse().setBody("{/* a comment! */}"));
 
     AnImplementation response = service.anImplementation(new AnImplementation("value"));
