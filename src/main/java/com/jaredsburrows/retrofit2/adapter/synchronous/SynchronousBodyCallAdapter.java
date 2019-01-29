@@ -8,6 +8,15 @@ import retrofit2.CallAdapter;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
+/**
+ * {@link CallAdapter} allows you to return deserialized type:
+ * <pre><code>
+ * interface MyService {
+ *   &#64;GET("user/me")
+ *   User getUser()
+ * }
+ * </code></pre>
+ */
 final class SynchronousBodyCallAdapter<R> implements CallAdapter<R, Object> {
   private final Type responseType;
 

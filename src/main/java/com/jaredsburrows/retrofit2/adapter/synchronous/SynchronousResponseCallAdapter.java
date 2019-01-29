@@ -8,6 +8,15 @@ import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
 
+/**
+ * {@link CallAdapter} allows you to return deserialized type wrapped in {@link Response}:
+ * <pre><code>
+ * interface MyService {
+ *   &#64;GET("user/me")
+ *   Response&lt;User&gt; getUser()
+ * }
+ * </code></pre>
+ */
 final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response<R>> {
   private static final MediaType DEFAULT_MEDIA_TYPE = MediaType.parse("text/plain");
   private final Type responseType;

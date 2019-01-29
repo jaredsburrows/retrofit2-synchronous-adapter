@@ -10,8 +10,26 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
- * Creates a synchronous call adapters for that uses the same thread for both I/O and
+ * A synchronous {@link CallAdapter.Factory} that uses the same thread for both I/O and
  * application-level callbacks.
+ * <p>
+ * Adding this class to {@link Retrofit} allows you to return direct deserialized type from
+ * service methods:
+ * <pre><code>
+ * interface MyService {
+ *   &#64;GET("user/me")
+ *   User getUser()
+ * }
+ * </code></pre>
+ * or allows you to return deserialized type wrapped in {@link Response}:
+ * <pre><code>
+ * interface MyService {
+ *   &#64;GET("user/me")
+ *   Response&lt;User&gt; getUser()
+ * }
+ * </code></pre>
+ * {@link CallAdapter.Factory} returns the deserialized body for 2XX responses, sets
+ * {@link retrofit2.HttpException} errors for non-2XX responses, and for network errors.
  */
 public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
   private SynchronousCallAdapterFactory() {
