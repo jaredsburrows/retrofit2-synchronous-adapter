@@ -3,7 +3,7 @@ plugins {
   id 'com.jfrog.artifactory' version '4.9.6'
   id 'com.jfrog.bintray' version '1.8.4'
   id 'com.github.ben-manes.versions' version '0.21.0'
-  id 'net.ltgt.errorprone' version '0.6.1'
+  id 'net.ltgt.errorprone' version '0.8'
   id 'java-library'
   id 'maven-publish'
 }
