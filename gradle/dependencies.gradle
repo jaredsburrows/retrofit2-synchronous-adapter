@@ -20,5 +20,5 @@ ext.deps = [
   'jsr305'       : 'com.google.code.findbugs:jsr305:3.0.2',
   'junit'        : 'junit:junit:4.12',
   'assertjCore'  : 'org.assertj:assertj-core:3.12.2',
-  'mockitoInline': 'org.mockito:mockito-inline:2.23.4',
+  'mockitoInline': 'org.mockito:mockito-inline:2.27.0',
 ]
