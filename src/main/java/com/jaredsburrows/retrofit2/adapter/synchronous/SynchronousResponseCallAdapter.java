@@ -39,17 +39,17 @@ final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response
       throw new RuntimeException(e);
     }
 
+    // If successful(200 OK) and Response<T> type, return the response with body
     if (response.isSuccessful()) {
-      // If successful(200 OK) and Response<T> type, return the response with body
       return Response.success(response.body(), response.raw());
+    }
+
+    // If unsuccessful(non 200 OK) and Response<T> type, return the response with body
+    ResponseBody errorBody = response.errorBody();
+    if (errorBody == null) {
+      return Response.error(ResponseBody.create(DEFAULT_MEDIA_TYPE, ""), response.raw());
     } else {
-      // If unsuccessful(non 200 OK) and Response<T> type, return the response with body
-      ResponseBody errorBody = response.errorBody();
-      if (errorBody == null) {
-        return Response.error(ResponseBody.create(DEFAULT_MEDIA_TYPE, ""), response.raw());
-      } else {
-        return Response.error(errorBody, response.raw());
-      }
+      return Response.error(errorBody, response.raw());
     }
   }
 }

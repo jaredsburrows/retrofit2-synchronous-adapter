@@ -13,8 +13,8 @@ import retrofit2.Retrofit;
  * A synchronous {@link CallAdapter.Factory} that uses the same thread for both I/O and
  * application-level callbacks.
  * <p>
- * Adding this class to {@link Retrofit} allows you to return direct deserialized type from
- * service methods:
+ * Adding this class to {@link Retrofit} allows you to return direct deserialized type from service
+ * methods:
  * <pre><code>
  * interface MyService {
  *   &#64;GET("user/me")
@@ -28,8 +28,8 @@ import retrofit2.Retrofit;
  *   Response&lt;User&gt; getUser()
  * }
  * </code></pre>
- * {@link CallAdapter.Factory} returns the deserialized body for 2XX responses, sets
- * {@link retrofit2.HttpException} errors for non-2XX responses, and for network errors.
+ * {@link CallAdapter.Factory} returns the deserialized body for 2XX responses, sets {@link
+ * retrofit2.HttpException} errors for non-2XX responses, and for network errors.
  */
 public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
   private SynchronousCallAdapterFactory() {
@@ -39,8 +39,8 @@ public final class SynchronousCallAdapterFactory extends CallAdapter.Factory {
     return new SynchronousCallAdapterFactory();
   }
 
-  @Override @Nullable public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations,
-      Retrofit retrofit) {
+  @Override @Nullable public CallAdapter<?, ?> get(
+      Type returnType, Annotation[] annotations, Retrofit retrofit) {
     // Prevent the Async calls via Call class
     if (getRawType(returnType) == Call.class) {
       return null;
