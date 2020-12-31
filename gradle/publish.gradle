@@ -33,7 +33,7 @@ def pomConfig = {
   }
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+task docsJar(type: Jar, dependsOn: javadoc) {
   group = 'Publications'
   description = 'Create javadoc jar of Java documentation.'
   classifier = 'javadoc'
@@ -70,7 +70,7 @@ publishing {
   publications {
     maven(MavenPublication) {
       from components.java // includes main 'artifact jar'
-      artifact javadocJar
+      artifact docsJar
       artifact sourcesJar
       artifact testsJar
       artifact reportsZip
@@ -91,7 +91,7 @@ publishing {
     }
   }
 }
-publish.dependsOn jar, javadocJar, sourcesJar, testsJar, reportsZip
+publish.dependsOn jar, docsJar, sourcesJar, testsJar, reportsZip
 publish.dependsOn 'generatePomFileForMavenPublication'
 
 // Snapshots published to JFrog Artifactory repository
@@ -116,7 +116,7 @@ artifactory {
     }
   }
 }
-artifactoryPublish.dependsOn jar, javadocJar, sourcesJar, testsJar, reportsZip
+artifactoryPublish.dependsOn jar, docsJar, sourcesJar, testsJar, reportsZip
 artifactoryPublish.dependsOn 'generatePomFileForMavenPublication'
 
 // Releases published to JFrog Bintray's JCenter repository
@@ -153,7 +153,7 @@ bintray {
   }
 }
 
-bintrayUpload.dependsOn jar, javadocJar, sourcesJar, testsJar, reportsZip
+bintrayUpload.dependsOn jar, docsJar, sourcesJar, testsJar, reportsZip
 bintrayUpload.dependsOn 'generatePomFileForMavenPublication'
 
 task release(dependsOn: bintrayUpload) {

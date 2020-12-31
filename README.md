@@ -1,7 +1,7 @@
 # Retrofit 2 Synchronous Adapter
 
 [![License](https://img.shields.io/badge/license-apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/jaredsburrows/retrofit2-synchronous-adapter.svg?branch=master)](https://travis-ci.org/jaredsburrows/retrofit2-synchronous-adapter)
+[![Build](https://github.com/jaredsburrows/retrofit2-synchronous-adapter/workflows/build/badge.svg)](https://github.com/jaredsburrows/retrofit2-synchronous-adapter/actions)
 [![Twitter Follow](https://img.shields.io/twitter/follow/jaredsburrows.svg?style=social)](https://twitter.com/jaredsburrows)
 
 
@@ -49,7 +49,7 @@ dependencies {
   compile 'com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.5.0'
 }
 ```
-Release versions are available in the [JFrog Bintray repository](https://jcenter.bintray.com/).
+Release versions are available in the [JFrog Bintray repository](https://jcenter.bintray.com/com/jaredsburrows/retrofit/retrofit2-synchronous-adapter/).
 
 **Snapshot:**
 ```groovy
@@ -61,7 +61,7 @@ dependencies {
   compile 'com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.6.0-SNAPSHOT'
 }
 ```
-Snapshot versions are available in the [JFrog Artifactory repository](https://oss.jfrog.org/artifactory/libs-snapshot/).
+Snapshot versions are available in the [JFrog Artifactory repository](https://oss.jfrog.org/artifactory/libs-snapshot/com/jaredsburrows/retrofit/retrofit2-synchronous-adapter/).
 
 ## License
 

@@ -3,7 +3,6 @@ plugins {
   id 'com.jfrog.artifactory' version '4.9.6'
   id 'com.jfrog.bintray' version '1.8.4'
   id 'com.github.ben-manes.versions' version '0.21.0'
-  id 'net.ltgt.errorprone' version '0.8'
   id 'java-library'
   id 'maven-publish'
 }
@@ -37,11 +36,6 @@ dependencies {
   implementation deps.squareup.retrofit2.retrofit
 
   compileOnly deps.jsr305
-
-  if (project.hasProperty('errorprone')) {
-    errorprone deps.errorprone.core
-    errorproneJavac deps.errorprone.javac
-  }
 
   testImplementation deps.junit
   testImplementation deps.assertjCore
