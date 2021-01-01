@@ -1,5 +1,7 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.gson.annotations.SerializedName;
 import okhttp3.ResponseBody;
 import okhttp3.mockwebserver.MockResponse;
@@ -12,8 +14,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * This test is to valid the code in the readme.
  */
@@ -23,10 +23,15 @@ public final class ExampleUsageTest {
 
   interface Service {
     @GET("/") TestDto returnDto();
+
     @GET("/") Response<TestDto> responseDto();
+
     @GET("/") Void returnVoid();
+
     @GET("/") Response<Void> responseVoid();
+
     @GET("/") ResponseBody returnResponseBody();
+
     @GET("/") Response<ResponseBody> responseResponseBody();
   }
 
@@ -36,9 +41,9 @@ public final class ExampleUsageTest {
 
   @Before public void setUp() {
     Retrofit retrofit = new Retrofit.Builder().baseUrl(server.url("/"))
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .addConverterFactory(GsonConverterFactory.create())
-        .build();
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .addConverterFactory(GsonConverterFactory.create())
+      .build();
     example = retrofit.create(Service.class);
   }
 

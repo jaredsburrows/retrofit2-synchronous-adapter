@@ -16,7 +16,7 @@ public class StringConverterFactory extends Converter.Factory {
   private static final MediaType MEDIA_TYPE = MediaType.get("text/plain");
 
   @Nullable @Override public Converter<ResponseBody, ?> responseBodyConverter(Type type,
-      Annotation[] annotations, Retrofit retrofit) {
+    Annotation[] annotations, Retrofit retrofit) {
     if (String.class.equals(type)) {
       return (Converter<ResponseBody, String>) ResponseBody::string;
     }
@@ -24,10 +24,15 @@ public class StringConverterFactory extends Converter.Factory {
   }
 
   @Nullable @Override public Converter<?, RequestBody> requestBodyConverter(Type type,
-      Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
+    Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
     if (String.class.equals(type)) {
-      return (Converter<String, RequestBody>) value -> RequestBody.create(MEDIA_TYPE, value);
+      return (Converter<String, RequestBody>) StringConverterFactory::create;
     }
     return null;
+  }
+
+  @SuppressWarnings("deprecation")
+  private static RequestBody create(String value) {
+    return RequestBody.create(MEDIA_TYPE, value);
   }
 }
