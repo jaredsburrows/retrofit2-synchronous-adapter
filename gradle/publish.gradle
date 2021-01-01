@@ -34,21 +34,21 @@ def pomConfig = {
 
 task docsJar(type: Jar, dependsOn: javadoc) {
   group = 'Publications'
-  description = 'Create javadoc jar of Java documentation.'
+  description = 'Create jar of documentation.'
   archiveClassifier = 'javadoc'
   from javadoc.destinationDir
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
   group = 'Publications'
-  description = 'Create jar of the sources.'
+  description = 'Create jar of sources.'
   archiveClassifier = 'sources'
   from sourceSets.main.allSource
 }
 
 task testsJar(type: Jar) {
   group = 'Publications'
-  description = 'Create jar of all tests.'
+  description = 'Create jar of tests.'
   archiveClassifier = 'tests'
   from sourceSets.test.output
 }
