@@ -1,10 +1,18 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
+import static okhttp3.mockwebserver.SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -28,38 +36,38 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Streaming;
 
-import static okhttp3.mockwebserver.SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
 /**
- * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory} instead.
+ * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory}
+ * instead.
  *
- * Based off of
- *  - https://github.com/square/retrofit/blob/master/retrofit/src/test/java/retrofit2/CallTest.java.
- *  - https://github.com/square/retrofit/blob/master/retrofit-adapters/java8/src/test/java/retrofit2/adapter/java8/CompletableFutureTest.java
+ * Based off of - https://github.com/square/retrofit/blob/master/retrofit/src/test/java/retrofit2/CallTest.java.
+ * - https://github.com/square/retrofit/blob/master/retrofit-adapters/java8/src/test/java/retrofit2/adapter/java8/CompletableFutureTest.java
  */
 public final class SynchronousCallTest {
   @Rule public final MockWebServer server = new MockWebServer();
 
   interface Service {
     @GET("/") String getString();
+
     @GET("/") ResponseBody getBody();
+
     @GET("/") @Streaming ResponseBody getStreamingBody();
+
     @POST("/") String postString(@Body String body);
+
     @POST("/{a}") String postRequestBody(@Path("a") Object a);
+
     @GET("/") Response<String> getStringResponse();
+
     @GET("/") Response<ResponseBody> getResponseBodyResponse();
   }
 
   @Test public void http200Sync() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setBody("Hi"));
@@ -70,10 +78,10 @@ public final class SynchronousCallTest {
 
   @Test public void http404Sync() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setResponseCode(404).setBody("Hi"));
@@ -84,17 +92,17 @@ public final class SynchronousCallTest {
       fail();
     } catch (Exception e) {
       assertThat(e)
-          .isInstanceOf(HttpException.class)
-          .hasMessage("HTTP 404 Client Error");
+        .isInstanceOf(HttpException.class)
+        .hasMessage("HTTP 404 Client Error");
     }
   }
 
   @Test public void transportProblemSync() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START));
@@ -108,19 +116,19 @@ public final class SynchronousCallTest {
 
   @Test public void conversionProblemOutgoingSync() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory() {
-          @Override
-          public Converter<?, RequestBody> requestBodyConverter(Type type,
-              Annotation[] parameterAnnotations, Annotation[] methodAnnotations,
-              Retrofit retrofit) {
-            return (Converter<String, RequestBody>) value -> {
-              throw new UnsupportedOperationException("I am broken!");
-            };
-          }
-        })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory() {
+        @Override
+        public Converter<?, RequestBody> requestBodyConverter(Type type,
+          Annotation[] parameterAnnotations, Annotation[] methodAnnotations,
+          Retrofit retrofit) {
+          return (Converter<String, RequestBody>) value -> {
+            throw new UnsupportedOperationException("I am broken!");
+          };
+        }
+      })
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     try {
@@ -133,18 +141,18 @@ public final class SynchronousCallTest {
 
   @Test public void conversionProblemIncomingSync() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory() {
-          @Override
-          public Converter<ResponseBody, ?> responseBodyConverter(Type type,
-              Annotation[] annotations, Retrofit retrofit) {
-            return (Converter<ResponseBody, String>) value -> {
-              throw new UnsupportedOperationException("I am broken!");
-            };
-          }
-        })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory() {
+        @Override
+        public Converter<ResponseBody, ?> responseBodyConverter(Type type,
+          Annotation[] annotations, Retrofit retrofit) {
+          return (Converter<ResponseBody, String>) value -> {
+            throw new UnsupportedOperationException("I am broken!");
+          };
+        }
+      })
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setBody("Hi"));
@@ -159,10 +167,10 @@ public final class SynchronousCallTest {
 
   @Test public void requestBeforeExecuteCreates() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service service = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse());
@@ -181,10 +189,10 @@ public final class SynchronousCallTest {
 
   @Test public void requestThrowingBeforeExecuteFailsExecute() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service service = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse());
@@ -208,10 +216,10 @@ public final class SynchronousCallTest {
 
   @Test public void requestAfterExecuteThrowingAlsoThrows() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service service = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse());
@@ -236,37 +244,37 @@ public final class SynchronousCallTest {
   @Test public void conversionProblemIncomingMaskedByConverterIsUnwrapped() {
     // MWS has no way to trigger IOExceptions during the response body so use an interceptor.
     OkHttpClient client = new OkHttpClient.Builder() //
-        .addInterceptor(chain -> {
-          okhttp3.Response response = chain.proceed(chain.request());
-          ResponseBody body = response.body();
-          BufferedSource source = Okio.buffer(new ForwardingSource(body.source()) {
-            @Override public long read(@Nonnull Buffer sink, long byteCount) throws IOException {
-              throw new IOException("cause");
-            }
-          });
-          body = ResponseBody.create(body.contentType(), body.contentLength(), source);
-          return response.newBuilder().body(body).build();
-        }).build();
+      .addInterceptor(chain -> {
+        okhttp3.Response response = chain.proceed(chain.request());
+        ResponseBody body = response.body();
+        BufferedSource source = Okio.buffer(new ForwardingSource(body.source()) {
+          @Override public long read(@Nonnull Buffer sink, long byteCount) throws IOException {
+            throw new IOException("cause");
+          }
+        });
+        body = create(body.contentType(), body.contentLength(), source);
+        return response.newBuilder().body(body).build();
+      }).build();
 
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .client(client)
-        .addConverterFactory(new StringConverterFactory() {
-          @Override
-          public Converter<ResponseBody, ?> responseBodyConverter(Type type,
-              Annotation[] annotations, Retrofit retrofit) {
-            return (Converter<ResponseBody, String>) value -> {
-              try {
-                return value.string();
-              } catch (IOException e) {
-                // Some serialization libraries mask transport problems in runtime exceptions. Bad!
-                throw new RuntimeException("wrapper", e);
-              }
-            };
-          }
-        })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .client(client)
+      .addConverterFactory(new StringConverterFactory() {
+        @Override
+        public Converter<ResponseBody, ?> responseBodyConverter(Type type,
+          Annotation[] annotations, Retrofit retrofit) {
+          return (Converter<ResponseBody, String>) value -> {
+            try {
+              return value.string();
+            } catch (IOException e) {
+              // Some serialization libraries mask transport problems in runtime exceptions. Bad!
+              throw new RuntimeException("wrapper", e);
+            }
+          };
+        }
+      })
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setBody("Hi"));
@@ -286,16 +294,16 @@ public final class SynchronousCallTest {
       }
     });
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory() {
-          @Override
-          public Converter<ResponseBody, ?> responseBodyConverter(Type type,
-              Annotation[] annotations, Retrofit retrofit) {
-            return converter;
-          }
-        })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory() {
+        @Override
+        public Converter<ResponseBody, ?> responseBodyConverter(Type type,
+          Annotation[] annotations, Retrofit retrofit) {
+          return converter;
+        }
+      })
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setStatus("HTTP/1.1 204 Nothin"));
@@ -312,16 +320,16 @@ public final class SynchronousCallTest {
       }
     });
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory() {
-          @Override
-          public Converter<ResponseBody, ?> responseBodyConverter(Type type,
-              Annotation[] annotations, Retrofit retrofit) {
-            return converter;
-          }
-        })
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory() {
+        @Override
+        public Converter<ResponseBody, ?> responseBodyConverter(Type type,
+          Annotation[] annotations, Retrofit retrofit) {
+          return converter;
+        }
+      })
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setStatus("HTTP/1.1 205 Nothin"));
@@ -333,10 +341,10 @@ public final class SynchronousCallTest {
 
   @Test public void successfulRequestResponseWhenMimeTypeMissing() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setBody("Hi").removeHeader("Content-Type"));
@@ -347,10 +355,10 @@ public final class SynchronousCallTest {
 
   @Test public void responseBody() throws IOException {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setBody("1234"));
@@ -361,15 +369,15 @@ public final class SynchronousCallTest {
 
   @Test public void responseBodyBuffers() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse()
-        .setBody("1234")
-        .setSocketPolicy(DISCONNECT_DURING_RESPONSE_BODY));
+      .setBody("1234")
+      .setSocketPolicy(DISCONNECT_DURING_RESPONSE_BODY));
 
     // When buffering we will detect all socket problems before returning the Response.
     try {
@@ -382,15 +390,15 @@ public final class SynchronousCallTest {
 
   @Test public void responseBodyStreams() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse()
-        .setBody("1234")
-        .setSocketPolicy(DISCONNECT_DURING_RESPONSE_BODY));
+      .setBody("1234")
+      .setSocketPolicy(DISCONNECT_DURING_RESPONSE_BODY));
 
     // When streaming we only detect socket problems as the ResponseBody is read.
     try {
@@ -403,15 +411,21 @@ public final class SynchronousCallTest {
 
   @Test public void emptyResponse() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(new StringConverterFactory())
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(new StringConverterFactory())
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     Service example = retrofit.create(Service.class);
 
     server.enqueue(new MockResponse().setBody("").addHeader("Content-Type", "text/stringy"));
 
     String response = example.getString();
     assertThat(response).isEmpty();
+  }
+
+  @SuppressWarnings("deprecation")
+  private static ResponseBody create(@Nullable MediaType mediaType, Long length,
+    BufferedSource source) {
+    return ResponseBody.create(mediaType, length, source);
   }
 }

@@ -1,6 +1,6 @@
 ext.versions = [
   'java'    : '1.8',
-  'retrofit': '2.5.0'
+  'retrofit': '2.9.0'
 ]
 
 ext.deps = [
@@ -10,7 +10,7 @@ ext.deps = [
       'gson'    : "com.squareup.retrofit2:converter-gson:$versions.retrofit"
     ],
     'okhttp3'  : [
-      'mockwebserver': 'com.squareup.okhttp3:mockwebserver:3.12.1',
+      'mockwebserver': 'com.squareup.okhttp3:mockwebserver:4.9.0',
     ]
   ],
   'jsr305'       : 'com.google.code.findbugs:jsr305:3.0.2',

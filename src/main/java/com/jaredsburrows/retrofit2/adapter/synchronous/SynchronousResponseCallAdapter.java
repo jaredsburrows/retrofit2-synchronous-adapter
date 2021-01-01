@@ -19,6 +19,7 @@ import retrofit2.Response;
  */
 final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response<R>> {
   private static final MediaType DEFAULT_MEDIA_TYPE = MediaType.get("text/plain");
+  private static final String DEFAULT_EMPTY_CONTENT = "";
   private final Type responseType;
 
   SynchronousResponseCallAdapter(Type responseType) {
@@ -46,10 +47,11 @@ final class SynchronousResponseCallAdapter<R> implements CallAdapter<R, Response
 
     // If unsuccessful(non 200 OK) and Response<T> type, return the response with body
     ResponseBody errorBody = response.errorBody();
+    okhttp3.Response raw = response.raw();
     if (errorBody == null) {
-      return Response.error(ResponseBody.create(DEFAULT_MEDIA_TYPE, ""), response.raw());
+      return Response.error(ResponseBody.create(DEFAULT_MEDIA_TYPE, DEFAULT_EMPTY_CONTENT), raw);
     } else {
-      return Response.error(errorBody, response.raw());
+      return Response.error(errorBody, raw);
     }
   }
 }

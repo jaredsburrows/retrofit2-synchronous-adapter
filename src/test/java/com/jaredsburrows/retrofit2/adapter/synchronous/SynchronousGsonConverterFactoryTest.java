@@ -1,5 +1,7 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -18,10 +20,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
- * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory} instead.
+ * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory}
+ * instead.
  *
  * Based off of: https://github.com/square/retrofit/blob/master/retrofit-converters/gson/src/test/java/retrofit2/converter/gson/GsonConverterFactoryTest.java.
  */
@@ -66,6 +67,7 @@ public final class SynchronousGsonConverterFactoryTest {
 
   interface Service {
     @POST("/") AnImplementation anImplementation(@Body AnImplementation impl);
+
     @POST("/") AnInterface anInterface(@Body AnInterface impl);
   }
 
@@ -75,14 +77,14 @@ public final class SynchronousGsonConverterFactoryTest {
 
   @Before public void setUp() {
     Gson gson = new GsonBuilder()
-        .registerTypeAdapter(AnInterface.class, new AnInterfaceAdapter())
-        .setLenient()
-        .create();
+      .registerTypeAdapter(AnInterface.class, new AnInterfaceAdapter())
+      .setLenient()
+      .create();
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(server.url("/"))
-        .addConverterFactory(GsonConverterFactory.create(gson))
-        .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
-        .build();
+      .baseUrl(server.url("/"))
+      .addConverterFactory(GsonConverterFactory.create(gson))
+      .addCallAdapterFactory(SynchronousCallAdapterFactory.create()) // Add synchronous adapter
+      .build();
     service = retrofit.create(Service.class);
   }
 
