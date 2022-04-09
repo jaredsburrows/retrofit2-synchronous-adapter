@@ -2,6 +2,22 @@ def isReleaseBuild() {
   return !VERSION_NAME.contains('SNAPSHOT')
 }
 
+def getRepositoryUsername() {
+  return project.properties['SONATYPE_USERNAME'] ?: System.getenv('SONATYPE_USERNAME')
+}
+
+def getRepositoryPassword() {
+  return project.properties['SONATYPE_PASSWORD'] ?: System.getenv('SONATYPE_PASSWORD')
+}
+
+def getReleaseRepositoryUrl() {
+  if (isReleaseBuild()) {
+    return 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+  } else {
+    return 'https://oss.sonatype.org/content/repositories/snapshots/'
+  }
+}
+
 task docsJar(type: Jar, dependsOn: javadoc) {
   group = 'Publications'
   description = 'Create jar of documentation.'
@@ -36,15 +52,11 @@ publishing {
 
     maven {
       credentials {
-        username project.properties['SONATYPE_USERNAME'] ?: System.getenv('SONATYPE_USERNAME')
-        password project.properties['SONATYPE_PASSWORD'] ?: System.getenv('SONATYPE_PASSWORD')
+        username getRepositoryUsername()
+        password getRepositoryPassword()
       }
 
-      if (isReleaseBuild()) {
-        url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-      } else {
-        url 'https://oss.sonatype.org/content/repositories/snapshots/'
-      }
+      url getReleaseRepositoryUrl()
     }
   }
 
@@ -99,12 +111,8 @@ publishing {
 }
 
 signing {
-  required { isReleaseBuild() && gradle.taskGraph.hasTask("release") }
+  required {
+    isReleaseBuild()
+  }
   sign publishing.publications.maven
-}
-
-// Publish to both Maven Central
-task release(dependsOn: publishMavenPublicationToMavenRepository) {
-  group = 'Publishing'
-  description = 'Publish to Maven Central and Gradle Plugins Repositories.'
 }

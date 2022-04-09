@@ -44,10 +44,10 @@ repositories {
 }
 
 dependencies {
-  compile 'com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.5.0'
+  compile 'com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.6.0'
 }
 ```
-Release versions are available in the [Sonatype's release repository](https://repo1.maven.org/maven2/com/jaredsburrows/retrofit/).
+Release versions are available in the [Sonatype's release repository](https://repo1.maven.org/maven2/com/jaredsburrows/retrofit/retrofit2-synchronous-adapter/).
 
 **Snapshot:**
 ```groovy
@@ -56,7 +56,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.6.0-SNAPSHOT'
+  compile 'com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.7.0-SNAPSHOT'
 }
 ```
 Snapshot versions are available in the [Sonatype's snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/com/jaredsburrows/retrofit/retrofit2-synchronous-adapter/).
