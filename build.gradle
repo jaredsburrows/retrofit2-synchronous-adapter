@@ -1,9 +1,10 @@
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
 plugins {
+  id 'com.vanniktech.maven.publish' version '0.18.0'
   id 'com.github.ben-manes.versions' version '0.42.0'
   id 'java-library'
-  id 'groovy'
-  id 'maven-publish'
-  id 'signing'
 }
 
 repositories {
@@ -19,18 +20,6 @@ description = POM_DESCRIPTION
 sourceCompatibility = versions.java
 targetCompatibility = versions.java
 
-jar {
-  manifest {
-    attributes(
-      'Implementation-Title': POM_NAME,
-      'Implementation-Version': archiveVersion,
-      'Built-By': System.getProperty('user.name'),
-      'Built-Date': new Date(),
-      'Built-JDK': System.getProperty('java.version'),
-      'Built-Gradle': gradle.gradleVersion)
-  }
-}
-
 dependencies {
   implementation deps.squareup.retrofit2.retrofit
 
@@ -44,9 +33,29 @@ dependencies {
   testImplementation deps.jsr305
 }
 
-apply from: 'gradle/publish.gradle'
+tasks.withType(Jar).configureEach {
+  def dateFile = new File(buildDir, 'jar-manifest-date.txt')
+  if (!dateFile.exists()) {
+    def date = DateTimeFormatter.ofPattern('EEE MMM dd HH:mm:ss zzz yyyy').
+      format(ZonedDateTime.now())
+    dateFile.parentFile.mkdirs()
+    dateFile.text = date.trim()
+  }
 
-tasks.withType(JavaCompile) {
+  manifest {
+    attributes(
+      'Created-By': POM_DEVELOPER_NAME,
+      'Implementation-Title': POM_NAME,
+      'Implementation-Version': VERSION_NAME,
+      'Implementation-Vendor': POM_DEVELOPER_NAME,
+      'Built-By': System.getProperty('user.name'),
+      'Built-Date': dateFile.text.trim(),
+      'Built-JDK': System.getProperty('java.version'),
+      'Built-Gradle': gradle.gradleVersion)
+  }
+}
+
+tasks.withType(JavaCompile).configureEach {
   sourceCompatibility = rootProject.versions.java
   targetCompatibility = rootProject.versions.java
 
@@ -58,7 +67,7 @@ tasks.withType(JavaCompile) {
   }
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
   // Turn on logging for all tests, filter to show failures/skips only
   testLogging {
     exceptionFormat 'full'
@@ -66,21 +75,5 @@ tasks.withType(Test) {
     showExceptions true
     showStackTraces true
     events 'failed', 'skipped'
-  }
-}
-
-tasks.withType(Javadoc) {
-  title = "${project.name} ${project.version}"
-  configure(options) {
-    header = project.name
-    encoding 'UTF-8'
-    docEncoding 'UTF-8'
-    charSet 'UTF-8'
-    linkSource true
-    author = true
-    links('http://docs.oracle.com/javase/8/docs/api/',
-      'http://docs.oracle.com/javaee/7/api/')
-    exclude "**/*Test.java"
-    if (JavaVersion.current().java8Compatible) addStringOption('Xdoclint:none', '-quiet')
   }
 }
