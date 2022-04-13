@@ -2,7 +2,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 plugins {
-  id 'com.vanniktech.maven.publish' version '0.18.0'
+  id 'com.vanniktech.maven.publish' version '0.18.0' apply false
   id 'com.github.ben-manes.versions' version '0.42.0'
   id 'java-library'
 }
@@ -11,69 +11,53 @@ repositories {
   mavenCentral()
 }
 
-apply from: 'gradle/dependencies.gradle'
+apply from: "${project.rootDir}/gradle/dependencies.gradle"
 
-group = GROUP
-version = VERSION_NAME
-description = POM_DESCRIPTION
-
-sourceCompatibility = versions.java
-targetCompatibility = versions.java
-
-dependencies {
-  implementation deps.squareup.retrofit2.retrofit
-
-  compileOnly deps.jsr305
-
-  testImplementation deps.junit
-  testImplementation deps.assertjCore
-  testImplementation deps.mockitoInline
-  testImplementation deps.squareup.okhttp3.mockwebserver
-  testImplementation deps.squareup.retrofit2.gson
-  testImplementation deps.jsr305
-}
-
-tasks.withType(Jar).configureEach {
-  def dateFile = new File(buildDir, 'jar-manifest-date.txt')
-  if (!dateFile.exists()) {
-    def date = DateTimeFormatter.ofPattern('EEE MMM dd HH:mm:ss zzz yyyy').
-      format(ZonedDateTime.now())
-    dateFile.parentFile.mkdirs()
-    dateFile.text = date.trim()
+subprojects {
+  repositories {
+    mavenCentral()
   }
 
-  manifest {
-    attributes(
-      'Created-By': POM_DEVELOPER_NAME,
-      'Implementation-Title': POM_NAME,
-      'Implementation-Version': VERSION_NAME,
-      'Implementation-Vendor': POM_DEVELOPER_NAME,
-      'Built-By': System.getProperty('user.name'),
-      'Built-Date': dateFile.text.trim(),
-      'Built-JDK': System.getProperty('java.version'),
-      'Built-Gradle': gradle.gradleVersion)
+  tasks.withType(Jar).configureEach {
+    def dateFile = new File(buildDir, 'jar-manifest-date.txt')
+    if (!dateFile.exists()) {
+      def date = DateTimeFormatter.ofPattern('EEE MMM dd HH:mm:ss zzz yyyy').
+        format(ZonedDateTime.now())
+      dateFile.parentFile.mkdirs()
+      dateFile.text = date.trim()
+    }
+
+    manifest {
+      attributes(
+        'Created-By': POM_DEVELOPER_NAME,
+        'Implementation-Title': POM_NAME,
+        'Implementation-Version': VERSION_NAME,
+        'Implementation-Vendor': POM_DEVELOPER_NAME,
+        'Built-By': System.getProperty('user.name'),
+        'Built-Date': dateFile.text.trim(),
+        'Built-JDK': System.getProperty('java.version'),
+        'Built-Gradle': gradle.gradleVersion)
+    }
   }
-}
 
-tasks.withType(JavaCompile).configureEach {
-  sourceCompatibility = rootProject.versions.java
-  targetCompatibility = rootProject.versions.java
+  tasks.withType(JavaCompile).configureEach {
+    sourceCompatibility = rootProject.versions.java
+    targetCompatibility = rootProject.versions.java
 
-  configure(options) {
-    compilerArgs << '-Xlint:all'
-    compilerArgs << '-Xlint:-options'
-    compilerArgs << '-Werror'
-    encoding = 'utf-8'
+    configure(options) {
+      compilerArgs << '-Xlint:all'
+      compilerArgs << '-Xlint:-options'
+      encoding = 'utf-8'
+    }
   }
-}
 
-tasks.withType(Test).configureEach {
-  // Turn on logging for all tests, filter to show failures/skips only
-  testLogging {
-    exceptionFormat 'full'
-    showCauses true
-    showExceptions true
-    showStackTraces true
-    events 'failed', 'skipped'
+  tasks.withType(Test).configureEach {
+    testLogging {
+      exceptionFormat 'full'
+      showCauses true
+      showExceptions true
+      showStackTraces true
+      events 'failed', 'skipped'
+    }
   }
 }

@@ -11,3 +11,5 @@ gradleEnterprise {
 }
 
 rootProject.name = 'retrofit2-synchronous-adapter'
+
+include ':retrofit2-synchronous-adapter'
