@@ -1,0 +1,23 @@
+plugins {
+  id 'com.vanniktech.maven.publish' version '0.18.0'
+  id 'java-library'
+}
+
+repositories {
+  mavenCentral()
+}
+
+apply from: "${project.rootDir}/gradle/dependencies.gradle"
+
+dependencies {
+  implementation deps.squareup.retrofit2.retrofit
+
+  compileOnly deps.jsr305
+
+  testImplementation deps.junit
+  testImplementation deps.assertjCore
+  testImplementation deps.mockitoInline
+  testImplementation deps.squareup.okhttp3.mockwebserver
+  testImplementation deps.squareup.retrofit2.gson
+  testImplementation deps.jsr305
+}
