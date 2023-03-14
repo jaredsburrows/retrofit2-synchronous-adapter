@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1.0.5
+        uses: gradle/wrapper-validation-action@v1.0.6
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
@@ -43,13 +43,16 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ matrix.java-version }}
+          cache: gradle
 
       - name: Run Build
-        run: ./gradlew clean build -s
+        uses: gradle/gradle-build-action@v2.4.0
+        with:
+          arguments: clean build -s
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.2
-        if: always()
+        if: github.repository == 'jaredsburrows/retrofit2-synchronous-adapter' && github.ref == 'refs/heads/master'
         with:
           name: retrofit2-synchronous-adapter-${{ github.workflow }}-${{ github.run_id }}
           path: |
@@ -59,11 +62,10 @@ jobs:
             build/distributions
             build/reports
             build/test-results
-          if-no-files-found: warn
 
   publish:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.repository == 'jaredsburrows/retrofit2-synchronous-adapter' && github.ref == 'refs/heads/master'
     needs:
       - jvm
 
@@ -72,16 +74,19 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1.0.5
+        uses: gradle/wrapper-validation-action@v1.0.6
 
       - name: Configure JDK
         uses: actions/setup-java@v3.10.0
         with:
           distribution: temurin
           java-version: 8
+          cache: gradle
 
       - name: Publish
-        run: ./gradlew clean publish -s
+        uses: gradle/gradle-build-action@v2.4.0
+        with:
+          arguments: clean publish -s
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
