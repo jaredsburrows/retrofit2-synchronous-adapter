@@ -26,7 +26,7 @@ jobs:
         uses: actions/setup-java@v3.11.0
         with:
           distribution: temurin
-          java-version: ${{ JAVA_VERSION }}
+          java-version: ${{ env.JAVA_VERSION }}
           cache: gradle
 
       - name: Run Build
@@ -70,7 +70,7 @@ jobs:
         uses: actions/setup-java@v3.11.0
         with:
           distribution: temurin
-          java-version: ${{ JAVA_VERSION }}
+          java-version: ${{ env.JAVA_VERSION }}
           cache: gradle
 
       - name: Publish
