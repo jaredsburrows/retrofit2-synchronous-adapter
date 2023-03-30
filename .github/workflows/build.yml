@@ -17,8 +17,7 @@ jobs:
     strategy:
       matrix:
         java-version:
-          - 8
-          - 11
+          - 19
 
     steps:
       - name: Checkout Project
@@ -75,7 +74,7 @@ jobs:
         uses: actions/setup-java@v3.11.0
         with:
           distribution: temurin
-          java-version: 8
+          java-version: ${{ matrix.java-version }}
           cache: gradle
 
       - name: Publish
