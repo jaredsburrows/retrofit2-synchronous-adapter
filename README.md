@@ -62,6 +62,8 @@ dependencies {
 ```
 Snapshot versions are available in the [Sonatype's snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/com/jaredsburrows/retrofit/retrofit2-synchronous-adapter/).
 
+Documentation is available at [jaredsburrows.github.io/retrofit2-synchronous-adapter/docs/0.x/](https://jaredsburrows.github.io/retrofit2-synchronous-adapter/docs/0.x/).
+
 ## License
 
 ```
