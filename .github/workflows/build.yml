@@ -7,6 +7,8 @@ on:
   pull_request:
     types: [ opened, labeled, unlabeled, synchronize ]
 
+permissions: {}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -19,6 +21,10 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      pull-requests: write
 
     strategy:
       fail-fast: false
