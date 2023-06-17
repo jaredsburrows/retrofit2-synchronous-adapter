@@ -2,7 +2,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 plugins {
-  id 'com.vanniktech.maven.publish' version '0.25.1' apply false
+  id 'com.vanniktech.maven.publish' version '0.25.2' apply false
   id 'com.github.ben-manes.versions' version '0.47.0'
   id 'java-library'
 }
