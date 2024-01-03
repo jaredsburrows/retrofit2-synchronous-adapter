@@ -2,7 +2,7 @@
 retrofit = "2.9.0"
 
 [libraries]
-assertj-core = { module = "org.assertj:assertj-core", version = "3.24.2" }
+assertj-core = { module = "org.assertj:assertj-core", version = "3.25.1" }
 gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 junit = { module = "junit:junit", version = "4.13.2" }
