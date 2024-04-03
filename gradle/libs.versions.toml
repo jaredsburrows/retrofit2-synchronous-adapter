@@ -1,5 +1,5 @@
 [versions]
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 
 [libraries]
 assertj-core = { module = "org.assertj:assertj-core", version = "3.25.2" }
