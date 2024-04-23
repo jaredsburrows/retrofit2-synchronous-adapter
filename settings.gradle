@@ -7,7 +7,16 @@ pluginManagement {
 }
 
 plugins {
-  id 'com.gradle.enterprise' version '3.16.2'
+  id 'com.gradle.develocity' version '3.17.2'
+}
+
+develocity {
+  buildScan {
+    termsOfUseUrl = 'https://gradle.com/terms-of-service'
+    termsOfUseAgree = 'yes'
+    def isCI = System.getenv('CI') != null
+    publishing.onlyIf { isCI }
+  }
 }
 
 dependencyResolutionManagement {
@@ -17,14 +26,6 @@ dependencyResolutionManagement {
     gradlePluginPortal()
     google()
     mavenCentral()
-  }
-}
-
-gradleEnterprise {
-  buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
-    publishAlways()
   }
 }
 
