@@ -1,6 +1,6 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,8 +23,7 @@ import retrofit2.http.POST;
 /**
  * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory}
  * instead.
- *
- * Based off of: https://github.com/square/retrofit/blob/master/retrofit-converters/gson/src/test/java/retrofit2/converter/gson/GsonConverterFactoryTest.java.
+ * From: https://github.com/square/retrofit/blob/d51805b9af79d631b43b5e8b85d12581989b1d49/retrofit-converters/gson/src/test/java/retrofit2/converter/gson/GsonConverterFactoryTest.java#L42
  */
 public final class SynchronousGsonConverterFactoryTest {
   interface AnInterface {

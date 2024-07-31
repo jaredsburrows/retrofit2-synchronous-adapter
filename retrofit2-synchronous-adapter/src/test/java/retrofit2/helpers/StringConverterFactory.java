@@ -10,7 +10,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 /**
- * From: https://github.com/square/retrofit/blob/master/retrofit-adapters/guava/src/test/java/retrofit2/adapter/guava/StringConverterFactory.java
+ * From: https://github.com/square/retrofit/blob/d51805b9af79d631b43b5e8b85d12581989b1d49/retrofit-adapters/guava/src/test/java/retrofit2/adapter/guava/StringConverterFactory.java#L26
  */
 public class StringConverterFactory extends Converter.Factory {
   private static final MediaType MEDIA_TYPE = MediaType.get("text/plain");
