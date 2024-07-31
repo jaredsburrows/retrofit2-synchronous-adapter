@@ -63,5 +63,11 @@ subprojects {
       showStackTraces true
       events 'failed', 'skipped'
     }
+
+    // For mockito to work with JDK 21
+    jvmArgs "-Dnet.bytebuddy.experimental=true"
+
+    def maxWorkerCount = gradle.startParameter.maxWorkerCount
+    maxParallelForks = (maxWorkerCount < 2) ? 1 : maxWorkerCount / 2
   }
 }
