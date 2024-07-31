@@ -1,7 +1,7 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
 import static okhttp3.mockwebserver.SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -39,9 +39,7 @@ import retrofit2.http.Streaming;
 /**
  * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory}
  * instead.
- *
- * Based off of - https://github.com/square/retrofit/blob/master/retrofit/src/test/java/retrofit2/CallTest.java.
- * - https://github.com/square/retrofit/blob/master/retrofit-adapters/java8/src/test/java/retrofit2/adapter/java8/CompletableFutureTest.java
+ * From: https://github.com/square/retrofit/blob/d51805b9af79d631b43b5e8b85d12581989b1d49/retrofit/java-test/src/test/java/retrofit2/CallTest.java#L53
  */
 public final class SynchronousCallTest {
   @Rule public final MockWebServer server = new MockWebServer();
@@ -92,8 +90,9 @@ public final class SynchronousCallTest {
       fail();
     } catch (Exception e) {
       assertThat(e)
-        .isInstanceOf(HttpException.class)
-        .hasMessage("HTTP 404 Client Error");
+        .isInstanceOf(HttpException.class);
+      assertThat(e)
+        .hasMessageThat().isEqualTo("HTTP 404 Client Error");
     }
   }
 
@@ -135,7 +134,7 @@ public final class SynchronousCallTest {
       example.postString("Hi");
       fail();
     } catch (UnsupportedOperationException e) {
-      assertThat(e).hasMessage("I am broken!");
+      assertThat(e).hasMessageThat().isEqualTo("I am broken!");
     }
   }
 
@@ -161,7 +160,7 @@ public final class SynchronousCallTest {
       example.postString("Hi");
       fail();
     } catch (UnsupportedOperationException e) {
-      assertThat(e).hasMessage("I am broken!");
+      assertThat(e).hasMessageThat().isEqualTo("I am broken!");
     }
   }
 
@@ -209,7 +208,7 @@ public final class SynchronousCallTest {
       service.postRequestBody(a);
       fail();
     } catch (RuntimeException e) {
-      assertThat(e).hasMessage("Broken!");
+      assertThat(e).hasMessageThat().isEqualTo("Broken!");
     }
     assertThat(writeCount.get()).isEqualTo(1);
   }
@@ -236,7 +235,7 @@ public final class SynchronousCallTest {
       service.postRequestBody(a);
       fail();
     } catch (RuntimeException e) {
-      assertThat(e).hasMessage("Broken!");
+      assertThat(e).hasMessageThat().isEqualTo("Broken!");
     }
     assertThat(writeCount.get()).isEqualTo(1);
   }
@@ -283,7 +282,7 @@ public final class SynchronousCallTest {
       example.getString();
       fail();
     } catch (Exception e) {
-      assertThat(e).hasMessageContaining("cause");
+      assertThat(e).hasMessageThat().contains("cause");
     }
   }
 
@@ -384,7 +383,7 @@ public final class SynchronousCallTest {
       example.getBody();
       fail();
     } catch (Exception e) {
-      assertThat(e).hasMessageContaining("unexpected end of stream");
+      assertThat(e).hasMessageThat().contains("unexpected end of stream");
     }
   }
 
@@ -405,7 +404,7 @@ public final class SynchronousCallTest {
       example.getStreamingBody().string();
       fail();
     } catch (IOException e) {
-      assertThat(e).hasMessage("unexpected end of stream");
+      assertThat(e).hasMessageThat().contains("unexpected end of stream");
     }
   }
 

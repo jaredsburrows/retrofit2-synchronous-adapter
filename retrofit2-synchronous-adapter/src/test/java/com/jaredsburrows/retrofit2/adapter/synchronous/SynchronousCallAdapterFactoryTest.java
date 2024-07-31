@@ -1,6 +1,6 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.gson.reflect.TypeToken;
@@ -20,8 +20,7 @@ import retrofit2.helpers.StringConverterFactory;
 /**
  * This test does not use {@link retrofit2.Call} and uses the {@link SynchronousCallAdapterFactory}
  * instead.
- *
- * Based off of: https://github.com/square/retrofit/blob/master/retrofit-adapters/guava/src/test/java/retrofit2/adapter/guava/GuavaCallAdapterFactoryTest.java
+ * From: https://github.com/square/retrofit/blob/d51805b9af79d631b43b5e8b85d12581989b1d49/retrofit-adapters/guava/src/test/java/retrofit2/adapter/guava/GuavaCallAdapterFactoryTest.java#L34
  */
 public final class SynchronousCallAdapterFactoryTest {
   @Rule public final MockWebServer server = new MockWebServer();
@@ -71,7 +70,7 @@ public final class SynchronousCallAdapterFactoryTest {
       factory.get(observableType, NO_ANNOTATIONS, retrofit);
       fail();
     } catch (IllegalStateException e) {
-      assertThat(e).hasMessage(
+      assertThat(e).hasMessageThat().isEqualTo(
         "Response must be parameterized as Response<Foo> or Response<? extends Foo>");
     }
   }

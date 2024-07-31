@@ -9,7 +9,7 @@ dependencies {
   compileOnly libs.jsr305
 
   testImplementation libs.junit
-  testImplementation libs.assertj.core
+  testImplementation libs.truth
   testImplementation libs.mockito.inline
   testImplementation libs.mockwebserver
   testImplementation libs.gson

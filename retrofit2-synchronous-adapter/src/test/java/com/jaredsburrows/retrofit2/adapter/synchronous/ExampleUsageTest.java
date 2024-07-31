@@ -1,6 +1,6 @@
 package com.jaredsburrows.retrofit2.adapter.synchronous;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gson.annotations.SerializedName;
 import okhttp3.ResponseBody;
@@ -35,7 +35,7 @@ public final class ExampleUsageTest {
     @GET("/") Response<ResponseBody> responseResponseBody();
   }
 
-  private static class TestDto {
+  static class TestDto {
     @SerializedName("name") String name;
   }
 
