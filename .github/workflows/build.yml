@@ -111,6 +111,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: retrofit2-synchronous-adapter/build/docs/javadoc
-          destination_dir: docs/0.x/
           user_name: "Github Actions"
           user_email: "action@github.com"
