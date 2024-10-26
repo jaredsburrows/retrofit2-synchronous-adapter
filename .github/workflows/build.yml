@@ -75,6 +75,15 @@ jobs:
     needs:
       - build
 
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout Project
         uses: actions/checkout@v4.2.2
@@ -106,13 +115,40 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
 
-      - name: Generate Docs
-        run: ./gradlew javadoc
-
-      - name: Publish Website
-        uses: peaceiris/actions-gh-pages@v4.0.0
+      - name: Install Python
+        uses: actions/setup-python@v5.3.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: retrofit2-synchronous-adapter/build/docs/javadoc
-          user_name: "Github Actions"
-          user_email: "action@github.com"
+          python-version: 3.12.4
+
+      - name: Install MkDocs Material
+        run: pip install mkdocs-material
+
+      - name: Copy docs
+        run: |
+          mkdir -p docs
+          cp README.md docs/index.md
+          cp CHANGELOG.md docs/changelog.md
+          mv retrofit2-synchronous-adapter/build/docs/javadoc/ docs/javadoc
+
+      - name: Build MkDocs
+        run: mkdocs build
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3.0.1
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4.0.5
+
+#      - name: Generate Docs
+#        run: ./gradlew javadoc
+#
+#      - name: Publish Website
+#        uses: peaceiris/actions-gh-pages@v4.0.0
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: retrofit2-synchronous-adapter/build/docs/javadoc
+#          user_name: "Github Actions"
+#          user_email: "action@github.com"
