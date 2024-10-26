@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -8,22 +11,20 @@ plugins {
   id 'idea'
 }
 
-allprojects {
-  tasks.withType(Wrapper).configureEach {
-    distributionType = Wrapper.DistributionType.ALL
-  }
+tasks.withType(Wrapper).configureEach {
+  distributionType = Wrapper.DistributionType.ALL
+}
 
-  idea {
-    module {
-      downloadSources = true
-      downloadJavadoc = true
-    }
+idea {
+  module {
+    downloadSources = true
+    downloadJavadoc = true
   }
 }
 
 subprojects {
   tasks.withType(Jar).configureEach {
-    def dateFile = new File(buildDir, 'jar-manifest-date.txt')
+    def dateFile = layout.buildDirectory.file('jar-manifest-date.txt').get().asFile
     if (!dateFile.exists()) {
       def date = DateTimeFormatter.ofPattern('EEE MMM dd HH:mm:ss zzz yyyy').
         format(ZonedDateTime.now())
@@ -57,11 +58,11 @@ subprojects {
 
   tasks.withType(Test).configureEach {
     testLogging {
-      exceptionFormat 'full'
-      showCauses true
-      showExceptions true
-      showStackTraces true
-      events 'failed', 'skipped'
+      exceptionFormat = TestExceptionFormat.FULL
+      showCauses = true
+      showExceptions = true
+      showStackTraces = true
+      events = [TestLogEvent.FAILED, TestLogEvent.SKIPPED]
     }
 
     // For mockito to work with JDK 21
