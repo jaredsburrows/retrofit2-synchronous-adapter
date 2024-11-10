@@ -56,6 +56,6 @@ markdown_extensions:
 nav:
   - 'Overview':
     - 'Overview': index.md
-  - 'API': docs/javadoc/index.html
+  - 'API': javadoc/
   - 'Change Log':
-      - 'Change Log': changelog/changelog.md
+      - 'Change Log': changelog.md
