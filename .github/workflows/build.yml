@@ -118,7 +118,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5.3.0
         with:
-          python-version: 3.12.4
+          python-version: 3.13.2
 
       - name: Install MkDocs Material
         run: pip install mkdocs-material
